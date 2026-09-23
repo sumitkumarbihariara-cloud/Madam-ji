@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HER — A Journey of a Woman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Marcellus&display=swap" rel="stylesheet">
+
+<!--
+PHOTO SETUP:
+Replace these filenames with your real image files, placed in the same folder as index.html:
+  photo-childhood.jpg
+  photo-smile.jpg
+  photo-favorite.jpg
+  photo-today.jpg
+  photo-us.jpg
+If a file is missing, a soft placeholder is shown automatically — nothing breaks.
+-->
+<!--
+MUSIC SETUP:
+Put music.mp3 in the same folder as index.html. Autoplay will respect browser restrictions;
+the visitor presses play the first time.
+-->
+
+<style>
+:root{
+  --rose:#eab0c2;
+  --rose-deep:#c4587f;
+  --gold:#e3bd77;
+  --lavender:#b299d6;
+  --ink:#160810;
+  --ink-soft:#230f1b;
+  --wine:#3d0f24;
+  --paper:#f8ecdf;
+  --mist: rgba(248,236,223,0.86);
+  --line: rgba(227,189,119,0.32);
+  --serif: 'Cormorant Garamond', 'Georgia', serif;
+  --sans: 'Marcellus', 'Georgia', serif;
+  --ease: cubic-bezier(.22,.68,0,1);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{ scroll-behavior:smooth; scroll-padding-top: var(--safe-t); }
+html,body{ height:100%; background:var(--ink); overflow-x:hidden; }
+body{
+  font-family: var(--serif);
+  color: var(--paper);
+  padding-top: var(--safe-t);
+  padding-bottom: var(--safe-b);
+  -webkit-font-smoothing:antialiased;
+  cursor: default;
+  background: var(--ink);
+}
+body::after{
+  content:'';
+  position: fixed; inset:0; z-index: 500; pointer-events:none; opacity:.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@font-face-fallback{}
+::selection{ background: var(--rose-deep); color: #fff; }
+img{max-width:100%; display:block;}
+button{ font-family: inherit; }
+a{ color: inherit; }
+
+.section{
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding: 90px 22px;
+  overflow: hidden;
+  scroll-margin-top: var(--safe-t);
+}
+.section-inner{ position:relative; z-index:3; max-width: 680px; width:100%; text-align:center; }
+.eyebrow{ font-family: var(--sans); font-size: 0.72rem; letter-spacing: .18em; color: var(--gold); opacity:.9; margin-bottom: 20px; display:inline-flex; align-items:center; gap:10px; }
+.eyebrow::before, .eyebrow::after{ content:''; width:22px; height:1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.eyebrow::after{ background: linear-gradient(90deg, var(--gold), transparent); }
+h1,h2,h3{ font-weight: 500; line-height: 1.15; }
+h2{ font-size: clamp(1.9rem, 6vw, 3rem); margin-bottom: 22px; }
+p.lede{ font-size: clamp(1.05rem, 3vw, 1.3rem); line-height: 1.7; color: var(--mist); max-width: 46ch; margin: 0 auto; }
+.line-reveal span{ display:inline-block; opacity:0; transform: translateY(14px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.line-reveal.in span{ opacity:1; transform:none; }
+
+/* ---------- canvases ---------- */
+canvas.bg{ position:absolute; inset:0; width:100%; height:100%; z-index:1; }
+.bg-gradient{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+
+/* ---------- LOADER ---------- */
+#loader{
+  position:fixed; inset:0; z-index:999; background:var(--ink);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transition: opacity .9s var(--ease), visibility .9s;
+}
+#loader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+.loader-glow{
+  width: 10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle, #fff 0%, var(--rose) 40%, transparent 75%);
+  box-shadow: 0 0 30px 12px rgba(232,163,184,.5);
+  animation: loaderPulse 2s var(--ease) forwards;
+}
+@keyframes loaderPulse{
+  0%{ width:6px; height:6px; box-shadow:0 0 10px 4px rgba(232,163,184,.4);}
+  60%{ width:70px; height:70px; box-shadow:0 0 60px 30px rgba(232,163,184,.55);}
+  100%{ width:54px; height:54px; box-shadow:0 0 50px 24px rgba(232,163,184,.45);}
+}
+.loader-text{ font-family: var(--serif); font-style: italic; color: var(--mist); margin-top: 26px; min-height: 1.6em; font-size: 1.05rem; letter-spacing:.02em; opacity:0; animation: fadeText 2s ease forwards; }
+@keyframes fadeText{ 0%,10%{opacity:0;} 30%,70%{opacity:1;} 100%{opacity:0;} }
+.loader-wordmark{ font-family:var(--sans); letter-spacing:.4em; font-size:1.1rem; color:var(--gold); margin-top:18px; opacity:0; animation: wordIn 2s ease forwards .1s; }
+@keyframes wordIn{ 0%,75%{opacity:0; transform:translateY(6px);} 100%{opacity:1; transform:none;} }
+.loader-bar{ width:160px; height:1px; background:rgba(255,255,255,.15); margin-top:22px; position:relative; overflow:hidden; }
+.loader-bar i{ position:absolute; left:0; top:0; height:100%; width:0%; background: var(--gold); box-shadow:0 0 8px var(--gold); animation: barFill 2s var(--ease) forwards; }
+@keyframes barFill{ from{width:0%;} to{width:100%;} }
+
+/* ---------- HERO ---------- */
+#hero{ padding-top: calc(var(--safe-t) + 20px); }
+.hero-title{ font-size: clamp(3.4rem, 16vw, 7rem); letter-spacing:.02em; font-weight:500;
+  background: linear-gradient(135deg, #fff, var(--rose) 55%, var(--gold));
+  -webkit-background-clip: text; background-clip:text; color: transparent;
+  filter: drop-shadow(0 0 26px rgba(196,88,127,.35));
+}
+.hero-sub{ font-family: var(--sans); letter-spacing:.28em; font-size: .78rem; color: var(--gold); margin-top: 10px; }
+.hero-quote{ margin-top: 34px; font-style: italic; font-size: clamp(1.05rem,3.2vw,1.35rem); color: var(--mist); }
+.dedication-line{ margin-top: 18px; font-family: var(--sans); font-size: .82rem; letter-spacing:.03em; color: var(--gold); opacity:.9; max-width: 40ch; margin-left:auto; margin-right:auto; }
+.dedication-line strong{ color: var(--rose); font-style:italic; font-family: var(--serif); font-size:1.05em; }
+.hero-cta{
+  margin-top: 46px; display:inline-flex; align-items:center; gap:10px;
+  background: linear-gradient(135deg, rgba(227,189,119,.16), rgba(196,88,127,.12));
+  border:1px solid var(--gold); color:var(--paper);
+  padding: 14px 30px; border-radius: 999px; font-family:var(--sans); font-size:.82rem; letter-spacing:.14em;
+  animation: breathe 3.6s ease-in-out infinite; transition: border-color .4s, background .4s, transform .3s;
+}
+.hero-cta:hover{ border-color: var(--gold); background: linear-gradient(135deg, rgba(227,189,119,.28), rgba(196,88,127,.2)); transform: translateY(-2px); }
+@keyframes breathe{ 0%,100%{ box-shadow:0 0 0 0 rgba(217,184,119,.0);} 50%{ box-shadow:0 0 26px 4px rgba(217,184,119,.18);} }
+.scroll-hint{ margin-top: 30px; font-family:var(--sans); font-size:.72rem; letter-spacing:.1em; color: rgba(246,239,228,.55); animation: bob 2.4s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+
+/* ---------- FLOATING NAV ---------- */
+#chapterNav{
+  position: fixed; z-index: 60;
+  top:50%; right: 18px; transform: translateY(-50%);
+  display:flex; flex-direction:column; gap:12px;
+}
+#chapterNav button{
+  background:none; border:none; color: rgba(246,239,228,.4);
+  font-family: var(--sans); font-size: .62rem; letter-spacing:.05em;
+  display:flex; align-items:center; gap:8px; cursor:pointer; justify-content:flex-end;
+  transition: color .3s;
+}
+#chapterNav button .dot{ width:6px; height:6px; border-radius:50%; background: currentColor; transition: all .35s; }
+#chapterNav button.active{ color: var(--gold); }
+#chapterNav button.active .dot{ width:9px; height:9px; box-shadow: 0 0 8px var(--gold); }
+#chapterNav button .label{ opacity:0; max-width:0; overflow:hidden; white-space:nowrap; transition: opacity .3s, max-width .3s; }
+#chapterNav:hover button .label{ opacity:1; max-width:140px; }
+
+@media (max-width: 760px){
+  #chapterNav{ top:auto; bottom: calc(var(--safe-b) + 10px); right:0; left:0; transform:none; flex-direction:row; justify-content:center; gap:0; background: rgba(16,12,20,.7); backdrop-filter: blur(10px); padding: 10px 8px; overflow-x:auto; }
+  #chapterNav button{ flex-direction:column; gap:4px; min-width: 30px; }
+  #chapterNav button .label{ display:none; }
+}
+
+/* ---------- PROGRESS ---------- */
+#progressWrap{
+  position: fixed; top: calc(var(--safe-t) + 14px); left:50%; transform:translateX(-50%); z-index:60;
+  text-align:center; font-family:var(--sans); font-size:.62rem; letter-spacing:.14em; color: rgba(246,239,228,.65);
+  pointer-events:none;
+}
+#progressBar{ width: 130px; height:2px; background: rgba(255,255,255,.15); margin: 6px auto 0; position:relative; }
+#progressBar i{ position:absolute; left:0; top:0; height:100%; background: var(--gold); box-shadow:0 0 6px var(--gold); transition: width .2s linear; }
+
+/* ---------- generic reveal ---------- */
+.reveal{ opacity:0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.reveal.in{ opacity:1; transform:none; }
+
+/* ---------- ORBIT (childhood) ---------- */
+.orbit-wrap{ position:relative; width: min(320px, 80vw); height: min(320px, 80vw); margin: 30px auto; }
+.orbit-center{
+  position:absolute; inset:0; margin:auto; width: 46%; height:46%; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.5), var(--rose) 60%, var(--rose-deep) 100%);
+  display:flex; align-items:center; justify-content:center; text-align:center; flex-direction:column;
+  box-shadow: 0 0 40px rgba(232,163,184,.35); transition: box-shadow .4s;
+}
+.orbit-center .age-num{ font-size: 2.2rem; color:#2a141f; font-weight:600; }
+.orbit-center .age-msg{ font-size:.72rem; color:#3a1e2a; padding: 0 14px; margin-top:4px; font-family: var(--sans); }
+.orbit-node{
+  position:absolute; width:44px; height:44px; border-radius:50%; background: rgba(255,255,255,.08);
+  border:1px solid var(--line); color:var(--paper); display:flex; align-items:center; justify-content:center;
+  font-family: var(--sans); cursor:pointer; transition: all .3s;
+}
+.orbit-node.active{ background: var(--gold); color:#2a1c05; border-color: var(--gold); box-shadow:0 0 16px var(--gold); }
+.grow-btn{ margin-top:26px; }
+
+/* ---------- MEMORY CARDS (age 6-10) ---------- */
+.card-scroll{ display:flex; gap:16px; overflow-x:auto; padding: 10px 6px 26px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling:touch; }
+.card-scroll::-webkit-scrollbar{ display:none; }
+.mem-card{
+  flex: 0 0 200px; scroll-snap-align:center; height: 260px; border-radius: 4px;
+  background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+  border:1px solid var(--line); padding: 22px 18px; display:flex; flex-direction:column; justify-content:flex-end;
+  transition: transform .4s var(--ease); position:relative; overflow:hidden;
+}
+.mem-card:hover, .mem-card:active{ transform: translateY(-8px) rotateX(2deg); }
+.mem-card .ic{ font-size:1.6rem; margin-bottom:10px; }
+.mem-card h4{ font-family:var(--sans); font-size:.95rem; letter-spacing:.06em; margin-bottom:6px; color:var(--gold); }
+.mem-card p{ font-size:.88rem; color: var(--mist); line-height:1.5; }
+
+/* ---------- SEASON TREE ---------- */
+.tree-wrap{ position:relative; width:220px; height:220px; margin: 20px auto 10px; }
+.season-label{ font-family:var(--sans); letter-spacing:.14em; font-size:.7rem; color:var(--gold); margin-top:8px; }
+
+/* ---------- CYCLE ORBIT ---------- */
+.cycle-wrap{ position:relative; width: min(300px,78vw); height: min(300px,78vw); margin: 24px auto; }
+.cycle-point{
+  position:absolute; width:30px; height:30px; border-radius:50%; background: rgba(232,163,184,.15);
+  border:1px solid rgba(232,163,184,.5); display:flex; align-items:center; justify-content:center;
+  font-size:.62rem; font-family:var(--sans); cursor:pointer; transition: all .3s;
+}
+.cycle-point:hover, .cycle-point.active{ background: var(--rose); color:#2a141f; box-shadow:0 0 14px var(--rose); }
+.cycle-center{ position:absolute; inset:0; margin:auto; width:38%; height:38%; border-radius:50%; background: radial-gradient(circle, rgba(255,255,255,.25), rgba(182,164,217,.25)); display:flex; align-items:center; justify-content:center; font-size:1.4rem; }
+.info-card{
+  margin-top:22px; background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:6px;
+  padding: 18px 20px; font-size:.92rem; color:var(--mist); min-height:70px; display:flex; align-items:center; justify-content:center; text-align:center;
+}
+.reveal-link{ margin-top:16px; background:none; border:none; color:var(--gold); font-family:var(--sans); font-size:.78rem; letter-spacing:.06em; cursor:pointer; border-bottom:1px solid var(--gold); padding-bottom:2px; }
+
+/* ---------- CALENDAR ---------- */
+.calendar-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:12px; max-width:420px; margin: 20px auto; }
+@media(max-width:480px){ .calendar-grid{ grid-template-columns: repeat(3,1fr); gap:8px; } }
+.month-card{
+  aspect-ratio: 1; background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:6px;
+  display:flex; align-items:center; justify-content:center; font-family:var(--sans); font-size:.78rem; letter-spacing:.04em;
+  cursor:pointer; transition: all .35s; position:relative; overflow:hidden;
+}
+.month-card.open{ background: rgba(232,163,184,.15); grid-column: span 3; aspect-ratio:auto; height:130px; flex-direction:column; gap:8px; padding:14px; }
+.heart-pulse{ font-size:1.1rem; animation: pulse 1.3s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ transform:scale(1); opacity:.8;} 50%{ transform:scale(1.25); opacity:1;} }
+
+/* ---------- CARE MODE ---------- */
+#careToggle{
+  position:fixed; z-index:55; bottom: calc(var(--safe-b) + 78px); right: 18px;
+  background: rgba(182,164,217,.15); border:1px solid var(--lavender); color:var(--paper);
+  padding: 10px 16px; border-radius:999px; font-family:var(--sans); font-size:.72rem; letter-spacing:.06em; cursor:pointer;
+}
+@media(max-width:760px){ #careToggle{ bottom: calc(var(--safe-b) + 90px); right:14px; } }
+body.care-mode{ background: #1b1420 !important; }
+body.care-mode *{ animation-duration: 2.4s !important; }
+#careOverlay{
+  position:fixed; inset:0; z-index:200; background: rgba(20,14,26,.94); backdrop-filter: blur(6px);
+  display:none; align-items:center; justify-content:center; flex-direction:column; text-align:center; padding:30px;
+}
+#careOverlay.show{ display:flex; }
+.care-word{ font-family:var(--sans); letter-spacing:.1em; font-size:.85rem; color:var(--lavender); margin: 3px 8px; display:inline-block; }
+#exitCare{ margin-top:30px; background:none; border:1px solid var(--line); color:var(--paper); padding:10px 22px; border-radius:999px; font-family:var(--sans); font-size:.75rem; cursor:pointer; }
+
+/* ---------- CONSTELLATION ---------- */
+.constellation-wrap{ position:relative; width: min(360px,86vw); height:min(360px,86vw); margin: 20px auto; }
+.star-point{ position:absolute; width:16px; height:16px; border-radius:50%; background: radial-gradient(circle, #fff, var(--gold)); box-shadow: 0 0 10px var(--gold); cursor:pointer; transition: transform .3s; }
+.star-point.opened{ transform: scale(1.5); }
+svg.const-lines line{ stroke: var(--gold); stroke-width:1; opacity:0; transition: opacity .6s; }
+svg.const-lines line.on{ opacity:.5; }
+.const-msg{ margin-top:14px; font-size:.9rem; color:var(--mist); min-height:1.4em; }
+.const-heart{ text-align:center; font-size:2.4rem; opacity:0; transition:opacity 1s; margin-top:10px; }
+.const-heart.show{ opacity:1; }
+
+/* ---------- floating words ---------- */
+.float-words{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+.float-word{ position:absolute; font-family:var(--sans); font-size: clamp(.9rem,2.4vw,1.3rem); color: rgba(232,163,184,.6); opacity:0; transition: opacity 1.2s ease, transform 1.2s ease; }
+.float-word.show{ opacity:1; transform: translateY(-10px); }
+
+/* ---------- card deck (notice) ---------- */
+.deck-wrap{ perspective: 1200px; width: min(320px,84vw); height: 220px; margin: 24px auto; position:relative; overflow:hidden; border-radius:8px; }
+.deck-card{
+  position:absolute; inset:0; border-radius:8px; background: linear-gradient(155deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  border:1px solid var(--line); display:flex; align-items:center; justify-content:center; padding: 26px; text-align:center;
+  font-size:1.05rem; font-style:italic; color: var(--paper); cursor:pointer; transition: transform .5s var(--ease), opacity .5s;
+  backface-visibility:hidden;
+}
+.deck-nav{ display:flex; gap:16px; justify-content:center; margin-top:16px; }
+.deck-nav button{ background:none; border:1px solid var(--line); color:var(--paper); width:36px; height:36px; border-radius:50%; cursor:pointer; }
+
+/* ---------- particle heart canvas section ---------- */
+#heartSection canvas{ position:absolute; inset:0; z-index:1; }
+.initials-reveal{ font-size: clamp(2.2rem,8vw,3.6rem); letter-spacing:.08em; color: var(--rose); opacity:0; transition: opacity 1.4s ease; margin-top:14px; }
+.initials-reveal.show{ opacity:1; }
+
+/* ---------- TIMELINE ---------- */
+.timeline{ position:relative; max-width:480px; margin: 20px auto; padding-left: 30px; text-align:left; }
+.timeline::before{ content:''; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background: var(--line); }
+.tl-item{ position:relative; margin-bottom:34px; }
+.tl-item::before{ content:''; position:absolute; left:-30px; top:4px; width:11px; height:11px; border-radius:50%; background: var(--gold); box-shadow:0 0 10px var(--gold); }
+.tl-item h4{ font-family:var(--sans); font-size:.85rem; letter-spacing:.06em; color:var(--gold); margin-bottom:5px; }
+.tl-item p{ color: var(--mist); font-size:.95rem; }
+
+/* ---------- MEMORY WALL ---------- */
+.wall-tabs{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:22px; }
+.wall-tabs button{ background:none; border:1px solid var(--line); color: var(--mist); padding:7px 16px; border-radius:999px; font-family:var(--sans); font-size:.68rem; letter-spacing:.06em; cursor:pointer; transition: all .3s; }
+.wall-tabs button.active{ background: var(--rose); color:#2a141f; border-color:var(--rose); }
+.wall-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:10px; max-width:520px; margin:0 auto; }
+.wall-frame{
+  aspect-ratio: 1; border-radius:3px; overflow:hidden; position:relative; cursor:pointer;
+  border: 6px solid rgba(255,255,255,.06); box-shadow: 0 6px 18px rgba(0,0,0,.4);
+}
+.wall-frame .ph{ width:100%; height:100%; background: linear-gradient(160deg, var(--rose), var(--lavender)); display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+.wall-frame img{ width:100%; height:100%; object-fit:cover; }
+#lightbox{ position:fixed; inset:0; z-index:300; background:rgba(8,6,10,.94); display:none; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
+#lightbox.show{ display:flex; }
+#lightbox .lb-img{ max-width: 90vw; max-height: 70vh; border-radius:4px; }
+.lb-caption{ margin-top:14px; font-style:italic; color:var(--mist); }
+.lb-controls{ margin-top:18px; display:flex; gap:20px; }
+.lb-controls button{ background:none; border:none; color:var(--paper); font-size:1.3rem; cursor:pointer; }
+
+/* ---------- SECRET MESSAGE ---------- */
+.secret-lock{ font-size:2.4rem; cursor:pointer; transition: transform .3s; display:inline-block; }
+.secret-lock:hover{ transform: scale(1.08); }
+.secret-reveal{ margin-top:20px; font-size:1.1rem; font-style:italic; color:var(--rose); max-width:44ch; opacity:0; transition: opacity 1.2s ease; }
+.secret-reveal.show{ opacity:1; }
+
+/* ---------- CERTIFICATE ---------- */
+.certificate{
+  background: linear-gradient(160deg, #fbf6ea, #f3e9d2); color:#3a2a1a; border-radius:6px; padding: clamp(28px,6vw,60px) clamp(20px,6vw,50px);
+  border: 2px solid var(--gold); box-shadow: 0 20px 50px rgba(0,0,0,.4); position:relative; max-width:560px; margin:0 auto;
+}
+.certificate::before{ content:'❧'; position:absolute; top:14px; left:18px; color: var(--gold); font-size:1.4rem; }
+.certificate::after{ content:'❧'; position:absolute; bottom:14px; right:18px; color: var(--gold); font-size:1.4rem; }
+.cert-title{ font-family: var(--sans); letter-spacing:.16em; font-size:.9rem; color:#8a6a2a; margin-bottom:22px; }
+.cert-body p{ font-size: 1.05rem; line-height:1.85; margin-bottom:14px; color:#3a2a1a; }
+.cert-hand{ font-style: italic; font-size:1.2rem; color: var(--rose-deep); }
+.cert-sign{ margin-top:26px; font-family: var(--sans); font-size:.82rem; letter-spacing:.05em; color:#6a5535; }
+
+/* ---------- ENVELOPE / LETTER ---------- */
+#letterTrigger{ margin-top:8px; }
+#envelopeModal{ position:fixed; inset:0; z-index:300; background: rgba(8,6,10,.92); display:none; align-items:center; justify-content:center; padding:20px; }
+#envelopeModal.show{ display:flex; }
+.envelope{ position:relative; width: min(340px,86vw); height: 220px; cursor:pointer; }
+.env-body{ position:absolute; inset:0; background: var(--paper); border-radius:4px; box-shadow:0 20px 40px rgba(0,0,0,.5); }
+.env-flap{ position:absolute; top:0; left:0; right:0; height:0; border-left: 170px solid transparent; border-right:170px solid transparent; border-top: 110px solid var(--rose-deep); transform-origin: top; transition: transform .8s var(--ease); }
+.envelope.open .env-flap{ transform: rotateX(180deg); }
+.letter-paper{
+  position:absolute; left:8%; right:8%; bottom:6%; top:60%; background: #fffdf6; border-radius:2px;
+  box-shadow: 0 -6px 20px rgba(0,0,0,.15); transition: top 1s var(--ease) .5s; overflow:hidden; padding: 16px; color:#3a2a1a;
+}
+.envelope.open .letter-paper{ top:-40%; }
+#letterFull{ display:none; }
+#letterFull.show{ display:flex; }
+.letter-sheet{
+  background: linear-gradient(180deg,#fffdf6,#faf3e2); color:#3a2a1a; max-width:560px; width:100%; border-radius:6px;
+  border:1px solid var(--gold); padding: clamp(26px,5vw,50px); position:relative; box-shadow:0 30px 60px rgba(0,0,0,.5);
+  max-height: 80vh; overflow-y:auto;
+}
+.letter-sheet h3{ font-family: var(--sans); letter-spacing:.1em; color:#8a6a2a; text-align:center; margin-bottom:18px; }
+.letter-sheet p{ line-height:1.85; margin-bottom:14px; font-size:1.02rem; }
+.letter-actions{ display:flex; gap:14px; justify-content:center; margin-top:18px; }
+.letter-actions button{ background:none; border:1px solid #8a6a2a; color:#5a4520; padding:8px 18px; border-radius:999px; font-family:var(--sans); font-size:.75rem; cursor:pointer; }
+
+/* hug */
+#hugArea{ margin-top:18px; }
+.hug-msg{ margin-top:16px; font-style:italic; color: var(--rose); opacity:0; transition: opacity 1s; }
+.hug-msg.show{ opacity:1; }
+
+/* ---------- MUSIC PLAYER ---------- */
+#player{
+  position:fixed; z-index:70; bottom: calc(var(--safe-b) + 14px); left: 14px;
+  background: rgba(16,12,20,.75); backdrop-filter: blur(10px); border:1px solid var(--line);
+  border-radius: 999px; padding: 8px 14px; display:flex; align-items:center; gap:10px; max-width: min(260px,60vw);
+}
+#player button{ background:none; border:none; color:var(--paper); cursor:pointer; font-size:1rem; }
+#player .track{ font-family:var(--sans); font-size:.65rem; letter-spacing:.05em; color: var(--mist); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#player input[type=range]{ width: 60px; }
+#playerProgress{ flex:1; height:2px; background: rgba(255,255,255,.2); position:relative; cursor:pointer; min-width: 40px; }
+#playerProgress i{ position:absolute; left:0; top:0; height:100%; background: var(--gold); width:0%; }
+
+/* ---------- cursor glow (desktop) ---------- */
+#cursorGlow{ position:fixed; width:22px; height:22px; border-radius:50%; border:1px solid rgba(217,184,119,.6); pointer-events:none; z-index:9999; transform: translate(-50%,-50%); transition: width .2s,height .2s, border-color .2s; mix-blend-mode: difference; }
+@media (hover:none){ #cursorGlow{ display:none; } }
+
+/* ---------- FINAL SCENE ---------- */
+#finale h2{ font-size: clamp(1.6rem,5.6vw,2.6rem); }
+.finale-line{ font-style:italic; color: var(--mist); margin: 14px 0; font-size: clamp(1rem,3vw,1.2rem); }
+.finale-cta-list{ margin-top: 30px; font-family: var(--sans); letter-spacing:.12em; font-size:.85rem; color: var(--gold); line-height:2.2; }
+
+footer{ text-align:center; padding: 40px 20px calc(40px + var(--safe-b)); font-family:var(--sans); font-size:.68rem; letter-spacing:.08em; color: rgba(246,239,228,.4); }
+
+/* ---------- REASONS CARD ---------- */
+.reason-card{
+  margin-top: 22px; background: linear-gradient(160deg, rgba(232,163,184,.1), rgba(182,164,217,.06));
+  border:1px solid var(--line); border-radius:10px; padding: 30px 26px; font-size:1.15rem; font-style:italic;
+  color: var(--paper); min-height: 90px; display:flex; align-items:center; justify-content:center; text-align:center;
+  max-width: 480px; margin-left:auto; margin-right:auto; transition: opacity .3s, transform .3s;
+}
+
+/* ---------- COUNTDOWN ---------- */
+.countdown-grid{ display:flex; gap:14px; justify-content:center; margin-top:20px; flex-wrap:wrap; }
+.cd-box{
+  background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:10px;
+  padding: 16px 14px; min-width: 72px; display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.cd-num{ font-family: var(--serif); font-size: 1.8rem; color: var(--gold); font-weight:600; }
+.cd-label{ font-family: var(--sans); font-size:.62rem; letter-spacing:.1em; color: var(--mist); }
+
+/* ---------- QUIZ ---------- */
+.quiz-box{ max-width: 460px; margin: 20px auto 0; }
+.quiz-progress{ font-family:var(--sans); font-size:.7rem; letter-spacing:.1em; color: var(--gold); margin-bottom:14px; }
+.quiz-question{ font-size:1.15rem; margin-bottom:20px; color: var(--paper); }
+.quiz-options{ display:flex; flex-direction:column; gap:12px; }
+.quiz-opt{
+  background: rgba(255,255,255,.05); border:1px solid var(--line); color: var(--paper);
+  padding: 14px 18px; border-radius:8px; font-family:var(--serif); font-size:1rem; cursor:pointer; text-align:left; transition: all .3s;
+}
+.quiz-opt:hover{ border-color: var(--gold); background: rgba(217,184,119,.08); }
+.quiz-opt.correct{ border-color: #9fd88a; background: rgba(159,216,138,.15); }
+.quiz-opt.wrong{ border-color: var(--rose-deep); background: rgba(199,107,138,.15); }
+.quiz-score{ font-size: 2.2rem; color: var(--gold); font-family: var(--serif); }
+
+/* ---------- MOOD CHECK-IN ---------- */
+.mood-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:22px; }
+.mood-btn{ background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:50%; width:56px; height:56px; font-size:1.6rem; cursor:pointer; transition: all .3s; }
+.mood-btn:hover, .mood-btn.selected{ transform: scale(1.15); border-color: var(--gold); background: rgba(217,184,119,.12); }
+.mood-history{ display:flex; gap:8px; justify-content:center; margin-top:24px; flex-wrap:wrap; }
+.mood-history span{ font-size:1.1rem; opacity:.75; }
+
+/* ---------- SCRATCH CARD ---------- */
+.scratch-wrap{ position:relative; width: min(340px,86vw); height: 160px; margin: 24px auto; border-radius:10px; overflow:hidden; border:1px solid var(--line); }
+.scratch-under{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+  background: linear-gradient(160deg, rgba(232,163,184,.18), rgba(182,164,217,.12));
+  font-style:italic; font-size:1.1rem; color: var(--rose);
+}
+#scratchCanvas{ position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:pointer; }
+.note-item{
+  background: rgba(255,255,255,.05); border:1px solid var(--line); border-radius:8px; padding: 12px 16px;
+  font-size:.9rem; color: var(--mist); text-align:left; display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+}
+.note-item .note-del{ background:none; border:none; color: rgba(246,239,228,.4); cursor:pointer; font-size:.9rem; flex-shrink:0; }
+.note-item .note-del:hover{ color: var(--rose); }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+a:focus-visible, button:focus-visible, .orbit-node:focus-visible, .cycle-point:focus-visible{ outline: 2px solid var(--gold); outline-offset:3px; }
+
+/* ---------- EVOLVING SECTION MOODS (dark -> warm -> dreamlike -> deep -> soft -> romantic) ---------- */
+#hero{ background: radial-gradient(ellipse at 50% 30%, var(--ink-soft), var(--ink) 70%); }
+#birthDetail{ background: radial-gradient(ellipse at 70% 20%, rgba(178,164,217,.14), var(--ink) 65%); }
+#childhood, #memoryCards{ background: radial-gradient(ellipse at 30% 10%, rgba(227,189,119,.13), var(--ink) 65%); }
+#growing{ background: radial-gradient(ellipse at 60% 80%, rgba(159,216,138,.08), var(--ink) 65%); }
+#cycle, #calendarSec{ background: radial-gradient(ellipse at 50% 20%, rgba(196,88,127,.15), var(--wine) 100%); }
+#moreThan, #noticeDeck{ background: radial-gradient(ellipse at 40% 60%, rgba(178,164,217,.16), var(--ink-soft) 70%); }
+#constellation{ background: radial-gradient(ellipse at 50% 40%, rgba(20,10,24,.4), var(--ink) 70%); }
+#heartSection, #ourTimeline, #reasonsSection, #countdownSection, #noteSection{ background: radial-gradient(ellipse at 50% 30%, rgba(196,88,127,.16), var(--wine) 80%); }
+#quizSection, #moodSection, #scratchSection, #dateIdeaSection, #secretSec{ background: radial-gradient(ellipse at 50% 60%, rgba(227,189,119,.1), var(--ink-soft) 70%); }
+#promise, #memoryWall{ background: radial-gradient(ellipse at 50% 20%, rgba(227,189,119,.14), var(--ink) 75%); }
+#finale{ background: radial-gradient(ellipse at 50% 50%, rgba(196,88,127,.22), var(--ink) 85%); }
+</style>
+</head>
+<body>
+
+<div id="cursorGlow" aria-hidden="true"></div>
+
+<!-- ============ LOADER ============ -->
+<div id="loader" role="status" aria-live="polite">
+  <div class="loader-glow"></div>
+  <div class="loader-text" id="loaderText">Kuch kahaniyan likhi nahi jaatin…</div>
+  <div class="loader-wordmark">HER</div>
+  <div class="loader-bar"><i></i></div>
+</div>
+
+<!-- ============ PROGRESS ============ -->
+<div id="progressWrap" aria-hidden="true">
+  <div id="chapterLabel">Chapter 01 of 11</div>
+  <div id="progressBar"><i id="progressFill"></i></div>
+</div>
+
+<!-- ============ CHAPTER NAV ============ -->
+<nav id="chapterNav" aria-label="Story chapters">
+  <button data-target="hero" class="active" aria-label="Janam"><span class="dot"></span><span class="label">01 Janam</span></button>
+  <button data-target="childhood" aria-label="Bachpan"><span class="dot"></span><span class="label">02 Bachpan</span></button>
+  <button data-target="growing" aria-label="Badi Hoti Hui"><span class="dot"></span><span class="label">03 Badi Hoti Hui</span></button>
+  <button data-target="cycle" aria-label="Samajhna"><span class="dot"></span><span class="label">04 Samajhna</span></button>
+  <button data-target="calendarSec" aria-label="Woh Din"><span class="dot"></span><span class="label">05 Woh Din</span></button>
+  <button data-target="moreThan" aria-label="Care"><span class="dot"></span><span class="label">06 Care</span></button>
+  <button data-target="constellation" aria-label="Uska Aasman"><span class="dot"></span><span class="label">07 Woh</span></button>
+  <button data-target="heartSection" aria-label="Hamari Kahani"><span class="dot"></span><span class="label">08 Hum</span></button>
+  <button data-target="promise" aria-label="Vaada"><span class="dot"></span><span class="label">09 Vaada</span></button>
+  <button data-target="memoryWall" aria-label="Yaadein"><span class="dot"></span><span class="label">10 Yaadein</span></button>
+  <button data-target="finale" aria-label="Aakhri"><span class="dot"></span><span class="label">11 Aakhri</span></button>
+</nav>
+
+<button id="careToggle" aria-haspopup="dialog">CARE MODE ♡</button>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="section">
+  <canvas class="bg" id="starCanvas" aria-hidden="true"></canvas>
+  <div class="bg-gradient" style="background: radial-gradient(circle at 50% 40%, rgba(232,163,184,.14), transparent 60%);"></div>
+  <div class="section-inner">
+    <div class="eyebrow">ek ladki ki kahani</div>
+    <h1 class="hero-title" id="heroName">HER</h1>
+    <div class="hero-sub">EK LADKI, EK POORI DUNIYA</div>
+    <p class="hero-quote">"Mera pyaar banne se pehle,<br>tum khud ek poori kahani thi."</p>
+    <p class="dedication-line">Khaas taur par <strong id="dedicationName">Rashi</strong> ke liye — aur har us ladki, har us aurat ke liye jo khud ek poori kahani hai.</p>
+    <button class="hero-cta" onclick="scrollToId('birthDetail')">USKI KAHANI SHURU KARO →</button>
+    <div class="scroll-hint">Neeche scroll karo, kahani padhne ke liye ↓</div>
+  </div>
+</section>
+
+<!-- ============ BIRTH ============ -->
+<section id="birthDetail" class="section" aria-label="Birth">
+  <canvas class="bg" id="nightCanvas" aria-hidden="true"></canvas>
+  <div class="section-inner">
+    <div class="eyebrow">pehla adhyaay · beginning</div>
+    <h2 class="line-reveal" id="birthLine1"><span>Ek roshni aayi,</span></h2>
+    <h2 class="line-reveal" id="birthLine2"><span>aur duniya thodi si narm ho gayi.</span></h2>
+    <p class="lede reveal" id="birthFinal">Uski kahani tab hi shuru ho chuki thi.</p>
+  </div>
+</section>
+
+<!-- ============ CHILDHOOD (age orbit) ============ -->
+<section id="childhood" class="section" aria-label="Childhood">
+  <div class="bg-gradient" style="background: radial-gradient(circle at 30% 20%, rgba(217,184,119,.12), transparent 55%);"></div>
+  <div class="section-inner">
+    <div class="eyebrow">dusra adhyaay · bachpan</div>
+    <h2 class="reveal">Uske chhote se saal</h2>
+    <div class="orbit-wrap" id="orbitWrap">
+      <div class="orbit-center" id="orbitCenter">
+        <div class="age-num" id="orbitAgeNum">1</div>
+        <div class="age-msg" id="orbitAgeMsg">first little world</div>
+      </div>
+    </div>
+    <button class="hero-cta grow-btn" id="growBtn" style="animation:none;">BADO 🌱</button>
+  </div>
+</section>
+
+<!-- ============ AGE 6-10 MEMORY CARDS ============ -->
+<section id="memoryCards" class="section" aria-label="Age six to ten">
+  <div class="section-inner" style="max-width:720px;">
+    <div class="eyebrow">chhote chhote pal</div>
+    <h2 class="reveal">Chhoti kahaniyan, chupke se likhi gayi</h2>
+    <div class="card-scroll" tabindex="0">
+      <div class="mem-card"><div class="ic">🎒</div><h4>SCHOOL</h4><p>Nayi jagah, naye niyam, aur khud ko dhoondhne ki shuruaat.</p></div>
+      <div class="mem-card"><div class="ic">🤝</div><h4>DOSTI</h4><p>Pehle log jinhe usne khud chuna tha.</p></div>
+      <div class="mem-card"><div class="ic">✨</div><h4>SAPNE</h4><p>Bade, simple, aur poore tarah se uske apne.</p></div>
+      <div class="mem-card"><div class="ic">🏠</div><h4>PARIVAR</h4><p>Woh shaant sahara jisne sab kuch sambhala.</p></div>
+      <div class="mem-card"><div class="ic">📖</div><h4>SEEKHNA</h4><p>Har sawaal ek darwaza tha jise woh khud kholna chahti thi.</p></div>
+      <div class="mem-card"><div class="ic">🌟</div><h4>HIMMAT</h4><p>Chhoti si, par har din thodi aur badhti hui.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GROWING UP — seasons ============ -->
+<section id="growing" class="section" aria-label="Growing up">
+  <div class="section-inner">
+    <div class="eyebrow">teesra adhyaay · badi hoti hui</div>
+    <h2 class="reveal">Badi hona matlab bahut kuchh badalna</h2>
+    <div class="tree-wrap" id="treeWrap">
+      <svg viewBox="0 0 200 200" width="100%" height="100%" aria-hidden="true">
+        <line x1="100" y1="120" x2="100" y2="190" stroke="#6b5230" stroke-width="6" stroke-linecap="round"/>
+        <circle id="treeCanopy" cx="100" cy="90" r="55" fill="#e8a3b8" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="season-label" id="seasonLabel">SPRING</div>
+    <p class="lede reveal" style="margin-top:26px;">Body badalti hai. Soch badalti hai.<br>Feelings badalti hain. Sapne badalte hain.</p>
+    <p class="lede reveal" style="margin-top:14px; font-style:italic; color:var(--gold);">Aur inme se kuch bhi chhupane wali baat nahi hai.</p>
+  </div>
+</section>
+
+<!-- ============ CYCLE EXPERIENCE ============ -->
+<section id="cycle" class="section" aria-label="Understanding her body">
+  <div class="section-inner">
+    <div class="eyebrow">chautha adhyaay · samajhna</div>
+    <h2 class="reveal">Ek shaant, prakritik rhythm</h2>
+    <div class="cycle-wrap" id="cycleWrap">
+      <div class="cycle-center">🌙</div>
+    </div>
+    <p class="lede" style="margin-top:6px;">Har body alag hoti hai.</p>
+    <div class="info-card" id="cycleInfo">Circle par kisi bhi point ko tap karo, aur jaano.</div>
+    <button class="reveal-link" id="learnBodyBtn">Apni body ke baare mein jaano →</button>
+    <div class="info-card" id="learnBodyCard" style="display:none; margin-top:14px;">
+      Cycle sab ke liye alag hota hai — koi ek "normal" nahi hota.
+      Aaram, garmahat, paani aur khud ke saath thodi si narmi — ye sab madad karte hain.
+      Agar symptoms severe ya unusual lagen, toh doctor se baat karna hamesha sahi rehta hai.
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALENDAR — days nobody sees ============ -->
+<section id="calendarSec" class="section" aria-label="The days nobody sees">
+  <div class="section-inner" style="max-width:640px;">
+    <div class="eyebrow">paanchva adhyaay</div>
+    <h2 class="reveal">Woh din jo koi nahi dekhta</h2>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</section>
+
+<!-- ============ SHE IS MORE THAN HER PAIN ============ -->
+<section id="moreThan" class="section" aria-label="She is more than her pain" style="position:relative;">
+  <div class="float-words" id="floatWords"></div>
+  <div class="section-inner">
+    <div class="eyebrow">chhata adhyaay</div>
+    <h2 class="reveal" style="font-size:clamp(1.6rem,6vw,2.6rem);">WOH SIRF USKA PERIOD NAHI HAI.</h2>
+    <p class="lede reveal" style="margin-top:22px;">Woh uske sapne hai. Uski hansi. Uski kindness.<br>Uski himmat. Uska dil.</p>
+    <p class="lede reveal" id="sheIsFinal" style="margin-top:22px; color:var(--gold); font-size:1.4rem;">WOH SIRF... WOH KHUD HAI.</p>
+  </div>
+</section>
+
+<!-- ============ THINGS I NOTICE ABOUT YOU ============ -->
+<section id="noticeDeck" class="section" aria-label="Things I notice about you">
+  <div class="section-inner">
+    <div class="eyebrow">ek chhota sa pause</div>
+    <h2 class="reveal">Tumhare baare mein jo mujhe pasand hai</h2>
+    <div class="deck-wrap" id="deckWrap"></div>
+    <div class="deck-nav">
+      <button id="deckPrev" aria-label="Previous">‹</button>
+      <button id="deckNext" aria-label="Next">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HER CONSTELLATION ============ -->
+<section id="constellation" class="section" aria-label="Her constellation">
+  <div class="section-inner">
+    <div class="eyebrow">saatva adhyaay</div>
+    <h2 class="reveal">Uska apna aasman</h2>
+    <div class="constellation-wrap" id="constWrap">
+      <svg class="const-lines" id="constLines" viewBox="0 0 300 300" width="100%" height="100%" style="position:absolute; inset:0;"></svg>
+    </div>
+    <div class="const-msg" id="constMsg">Kisi bhi taare ko tap karo.</div>
+    <div class="const-heart" id="constHeart">💗<div style="font-family:var(--sans); font-size:.85rem; color:var(--mist); margin-top:8px;">Uska har chhota sa hissa milkar hi poori woh banti hai.</div></div>
+  </div>
+</section>
+
+<!-- ============ AND THEN THERE WAS ME — particle heart ============ -->
+<section id="heartSection" class="section" aria-label="And then there was me">
+  <canvas id="heartCanvas" aria-hidden="true"></canvas>
+  <div class="section-inner">
+    <div class="eyebrow">aathva adhyaay</div>
+    <h2 class="reveal">AUR PHIR… MAIN AAYA.</h2>
+    <div class="initials-reveal" id="initialsReveal"></div>
+    <p class="lede reveal" style="margin-top:22px;">Main bahut baad mein aaya.</p>
+    <p class="lede reveal" style="margin-top:8px; color:var(--gold);">Lekin ab main yahan hoon.</p>
+    <p class="lede reveal" id="personalMsg" style="margin-top:22px;"></p>
+  </div>
+</section>
+
+<!-- ============ OUR TIMELINE ============ -->
+<section id="ourTimeline" class="section" aria-label="Our timeline">
+  <div class="section-inner">
+    <div class="eyebrow">hamari kahani</div>
+    <h2 class="reveal">Hamara timeline</h2>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<!-- ============ NEW FEATURE: REASONS I LOVE YOU ============ -->
+<section id="reasonsSection" class="section" aria-label="Reasons I love you">
+  <div class="section-inner">
+    <div class="eyebrow">bas ek aur chhoti si baat</div>
+    <h2 class="reveal">Kyun main tumse pyaar karta hoon</h2>
+    <div class="reason-card" id="reasonCard">Ek button dabao, ek wajah jaano.</div>
+    <button class="hero-cta" id="reasonBtn" style="margin-top:26px; animation:none;">EK AUR WAJAH DO 🎲</button>
+  </div>
+</section>
+
+<!-- ============ NEW FEATURE: ANNIVERSARY COUNTDOWN ============ -->
+<section id="countdownSection" class="section" aria-label="Next special day countdown">
+  <div class="section-inner">
+    <div class="eyebrow">agla khaas din</div>
+    <h2 class="reveal" id="countdownTitle">Hamare agle khaas din tak</h2>
+    <div class="countdown-grid" id="countdownGrid">
+      <div class="cd-box"><span class="cd-num" id="cdDays">--</span><span class="cd-label">Din</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdHours">--</span><span class="cd-label">Ghante</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdMins">--</span><span class="cd-label">Minute</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdSecs">--</span><span class="cd-label">Second</span></div>
+    </div>
+    <p class="lede" style="margin-top:18px; font-size:.85rem; opacity:.7;" id="countdownNote">Date CONFIG mein set karo, taaki yeh sahi se chale.</p>
+    <button class="reveal-link" id="addToCalBtn" style="display:none;">Calendar mein add karo →</button>
+  </div>
+</section>
+
+<!-- ============ NEW FEATURE: LEAVE A NOTE / GUESTBOOK ============ -->
+<section id="noteSection" class="section" aria-label="Leave a note">
+  <div class="section-inner">
+    <div class="eyebrow">tumhari baari</div>
+    <h2 class="reveal">Yahan apni ek baat likh do</h2>
+    <p class="lede" style="margin-bottom:20px;">Kuch bhi — jo dil mein aaye. Yeh sirf isi phone/browser mein save hoga.</p>
+    <textarea id="noteInput" placeholder="Yahan likho…" rows="3" style="width:100%; max-width:420px; background:rgba(255,255,255,.05); border:1px solid var(--line); border-radius:8px; color:var(--paper); font-family:var(--serif); font-size:1rem; padding:14px; resize:vertical;"></textarea>
+    <div>
+      <button class="hero-cta" id="saveNoteBtn" style="margin-top:16px; animation:none;">SAVE KARO 💌</button>
+    </div>
+    <div id="savedNotes" style="margin-top:24px; display:flex; flex-direction:column; gap:10px; max-width:420px; margin-left:auto; margin-right:auto;"></div>
+  </div>
+</section>
+
+
+<!-- ============ NEW FEATURE: SCRATCH CARD SURPRISE ============ -->
+<section id="scratchSection" class="section" aria-label="Scratch card surprise">
+  <div class="section-inner">
+    <div class="eyebrow">ek chhota surprise</div>
+    <h2 class="reveal">Yahan ungli se scratch karo</h2>
+    <div class="scratch-wrap" id="scratchWrap">
+      <div class="scratch-under" id="scratchUnder">Tumhare bina, meri kahani adhoori hoti.</div>
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+    <p class="lede" style="margin-top:14px; font-size:.82rem; opacity:.7;">Neeche wale message ko dhakne wali layer ko unglee ya mouse se scratch karo.</p>
+  </div>
+</section>
+
+<!-- ============ NEW FEATURE: DATE NIGHT IDEA GENERATOR ============ -->
+<section id="dateIdeaSection" class="section" aria-label="Date night idea generator">
+  <div class="section-inner">
+    <div class="eyebrow">agla plan</div>
+    <h2 class="reveal">Aaj hum kya karein?</h2>
+    <div class="reason-card" id="dateIdeaCard">Button dabao, ek idea milega.</div>
+    <button class="hero-cta" id="dateIdeaBtn" style="margin-top:26px; animation:none;">EK IDEA DO 🎯</button>
+  </div>
+</section>
+
+
+<!-- ============ NEW FEATURE: QUIZ ============ -->
+<section id="quizSection" class="section" aria-label="How well do you know me quiz">
+  <div class="section-inner">
+    <div class="eyebrow">ek chhota sa test</div>
+    <h2 class="reveal">Mujhe kitna jaanti ho?</h2>
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-progress" id="quizProgress">Sawaal 1 / 4</div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+    </div>
+    <div class="quiz-result" id="quizResult" style="display:none;">
+      <div class="quiz-score" id="quizScore"></div>
+      <p class="lede" id="quizResultMsg" style="margin-top:10px;"></p>
+      <button class="hero-cta" id="quizRestartBtn" style="margin-top:20px; animation:none;">DOBARA KHELO 🔁</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW FEATURE: MOOD CHECK-IN ============ -->
+<section id="moodSection" class="section" aria-label="Daily mood check-in">
+  <div class="section-inner">
+    <div class="eyebrow">aaj ka haal</div>
+    <h2 class="reveal">Aaj tum kaisa feel kar rahi ho?</h2>
+    <div class="mood-row" id="moodRow">
+      <button class="mood-btn" data-mood="🥰" aria-label="Bahut khush">🥰</button>
+      <button class="mood-btn" data-mood="😊" aria-label="Achha">😊</button>
+      <button class="mood-btn" data-mood="😐" aria-label="Theek thaak">😐</button>
+      <button class="mood-btn" data-mood="😔" aria-label="Thoda low">😔</button>
+      <button class="mood-btn" data-mood="😴" aria-label="Thaki hui">😴</button>
+    </div>
+    <p class="lede" id="moodResponse" style="margin-top:22px; min-height:1.6em;"></p>
+    <div class="mood-history" id="moodHistory"></div>
+  </div>
+</section>
+
+
+<!-- ============ SECRET MESSAGE ============ -->
+<section id="secretSec" class="section" aria-label="A secret message">
+  <div class="section-inner">
+    <div class="eyebrow">aage badhne se pehle</div>
+    <p class="lede">Kuch hai jo maine abhi tak nahi kaha…</p>
+    <div class="secret-lock" id="secretLock" role="button" tabindex="0" aria-label="Unlock secret message">🔒</div>
+    <div style="font-family:var(--sans); font-size:.75rem; letter-spacing:.06em; color:var(--gold); margin-top:8px;">Kholne ke liye tap karo ❤️</div>
+    <p class="secret-reveal" id="secretText"></p>
+  </div>
+</section>
+
+<!-- ============ MY PROMISE — certificate ============ -->
+<section id="promise" class="section" aria-label="My promise to you">
+  <div class="section-inner" style="max-width:640px;">
+    <div class="eyebrow reveal">nauwa adhyaay · vaada</div>
+    <div class="certificate reveal">
+      <div class="cert-title">MERA VAADA, TUMSE</div>
+      <div class="cert-body">
+        <p>Main vaada karta hoon ki tumhe dekhunga — na sirf woh version jo duniya dekhti hai, balki tumhara har shaant, adhoora, ab bhi ban raha hissa bhi.</p>
+        <p>Main vaada karta hoon ki tumhari softness aur tumhari strength, dono ke liye jagah banaunga — aasan dinon mein bhi, aur bhaari dinon mein bhi.</p>
+        <p class="cert-hand">Main vaada karta hoon ki tumhe baar baar chunta rahunga.</p>
+      </div>
+      <div class="cert-sign">Pyaar ke saath, <span id="certName">Aayush</span> · <span id="certDate"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEMORY WALL ============ -->
+<section id="memoryWall" class="section" aria-label="Memory wall">
+  <div class="section-inner" style="max-width:640px;">
+    <div class="eyebrow">daswa adhyaay</div>
+    <h2 class="reveal">Yaadon ki deewar</h2>
+    <div class="wall-tabs" id="wallTabs">
+      <button class="active" data-cat="all">SAB</button>
+      <button data-cat="her">WOH</button>
+      <button data-cat="smile">USKI MUSKAAN</button>
+      <button data-cat="childhood">BACHPAN</button>
+      <button data-cat="favorites">PASANDIDA</button>
+      <button data-cat="us">HAMARI YAADEIN</button>
+      <button data-cat="today">AAJ</button>
+    </div>
+    <div class="wall-grid" id="wallGrid"></div>
+    <button class="hero-cta" id="playStoryBtn" style="margin-top:26px; animation:none;">▶ HAMARI YAADEIN DEKHO</button>
+  </div>
+</section>
+
+<!-- ============ FINAL SCENE ============ -->
+<section id="finale" class="section" aria-label="Final scene">
+  <canvas class="bg" id="finaleCanvas" aria-hidden="true"></canvas>
+  <div class="section-inner">
+    <div class="eyebrow">aakhri adhyaay, abhi ke liye</div>
+    <h2 class="reveal">USS LADKI KE NAAM, JO MERI DUNIYA BAN GAYI</h2>
+    <p class="finale-line reveal">Tum ek kahani thi, mere is kahani ka hissa banne se bahut pehle.</p>
+    <p class="finale-line reveal">Aur main grateful hoon ki aaj main us aurat ko jaanta hoon jo tum ban chuki ho.</p>
+    <div class="finale-cta-list reveal">
+      BADHTI RAHO.<br>SAPNE DEKHTI RAHO.<br>BAS TUM RAHO. ❤️
+    </div>
+    <button class="hero-cta" id="letterTrigger" style="margin-top:36px; animation:none;">MERA AAKHRI MESSAGE PADHO</button>
+    <div style="margin-top:18px;">
+      <button class="reveal-link" id="shareBtn">Yeh page share karo →</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Usse kabhi perfect hone ki zaroorat nahi thi. Bas itna jaanna tha ki woh kabhi akeli nahi thi.<br>
+  <span style="opacity:.75;">Rashi ke liye, aur har us ladki ke liye jo apni kahani khud jeeti hai.</span>
+</footer>
+
+<!-- ============ OVERLAYS / MODALS ============ -->
+
+<div id="careOverlay" role="dialog" aria-modal="true" aria-label="Care mode">
+  <div style="font-family:var(--sans); letter-spacing:.1em; color:var(--gold); font-size:.8rem; margin-bottom:16px;">CARE MODE</div>
+  <p class="lede" id="careMainMsg">Aaj tumhe sabke liye strong rehne ki zaroorat nahi.</p>
+  <div style="margin-top:26px;">
+    <span class="care-word">AARAM</span><span class="care-word">PAANI</span><span class="care-word">COMFORT</span>
+    <span class="care-word">SAHARA</span><span class="care-word">SUNO</span><span class="care-word">SAANS LO</span>
+  </div>
+  <button id="exitCare">Care Mode Band Karo</button>
+</div>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-controls">
+    <button id="lbPrev" aria-label="Previous photo">‹</button>
+    <button id="lbPause" aria-label="Pause slideshow">⏸</button>
+    <button id="lbNext" aria-label="Next photo">›</button>
+    <button id="lbClose" aria-label="Close">✕</button>
+  </div>
+</div>
+
+<div id="envelopeModal" role="dialog" aria-modal="true" aria-label="Letter">
+  <div>
+    <div class="envelope" id="envelope">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="letter-paper"></div>
+    </div>
+    <div style="text-align:center; margin-top:16px; font-family:var(--sans); font-size:.72rem; letter-spacing:.08em; color:var(--mist);">tap the envelope</div>
+  </div>
+</div>
+
+<div id="letterFull" role="dialog" aria-modal="true" aria-label="Letter for you">
+  <div class="letter-sheet">
+    <h3>FOR MY JAAN</h3>
+    <div id="letterBody">
+      <p><strong>Hii madam ji,</strong></p>
+      <p><strong>Kuchh khaas message nahi hai, bas aapko kai din se feel ho raha tha ki — yaar, aapko kitna dard hota hai har mahine. Aap kya, har women's aur girls ko. Jab se aap meri zindagi mein aayi, tab jaake pata chala, maine feel kiya hai.</strong></p>
+      <p><strong>Aur mujhe laga — yaar, ladkiyan kitni himmat wali hoti hain, andar se itni mazboot hoti hain. Har mahine is dard ko jhelna, khud ko control karna, aur bahut kuchh. Sach mein, aap log bahut mazboot ho. Humein toh thodi si chot lag jaaye toh dard hota hai, aur hum dawa le lete hain. Dil se yaar, aap log bahut mazboot ho.</strong></p>
+      <p><strong>I love you — sabko toh nahi, aapko. Maine really feel kiya hai aapko kitna dard hota hai, bhale hi aap na bataye. Lekin main bhi jaanta hoon yaar. I love you so much, cutie 🥰</strong></p>
+      <p><strong>Aur haan, ek baat sun lo — yeh bekar-bekar si baat dil pe serious mat lena, samjhi na. Aur achhe se khana-peena khaya karo, pagli. Mera koi tension mat lena, samjhi? Woh thoda-thoda lena bas. Ok ji, love you cutie pie 🥰</strong></p>
+      <p style="text-align:right; font-style:italic;">— Aayush</p>
+    </div>
+    <div id="hugArea">
+      <p style="text-align:center; font-family:var(--sans); font-size:.8rem; letter-spacing:.05em; color:#8a6a2a;">Thoda aur pyaar chahiye?</p>
+      <div style="text-align:center; margin-top:10px;">
+        <button class="hero-cta" id="hugBtn" style="animation:none; border-color:#8a6a2a; color:#5a4520;">EK VIRTUAL HUG BHEJO 🤍</button>
+      </div>
+      <p class="hug-msg" id="hugMsg" style="text-align:center;">Ek chhoti si yaad dilana: tumhara khayal rakha jata hai.</p>
+    </div>
+    <div class="letter-actions">
+      <button id="letterReadAgain">Dobara padho</button>
+      <button id="letterClose">Band karo</button>
+    </div>
+  </div>
+</div>
+<canvas id="hugCanvas" style="position:fixed; inset:0; z-index:301; pointer-events:none; display:none;"></canvas>
+
+<!-- ============ MUSIC PLAYER ============ -->
+<div id="player" aria-label="Music player">
+  <button id="playBtn" aria-label="Play music">▶</button>
+  <div id="playerProgress" role="slider" aria-label="Track progress"><i id="playerProgressFill"></i></div>
+  <span class="track">Her Story</span>
+  <button id="muteBtn" aria-label="Mute">🔊</button>
+</div>
+<audio id="bgAudio" src="music.mp3" preload="none" loop></audio>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= CONFIG ================= */
+const CONFIG = {
+  herName: "Rashi",
+  herNickname: "Butki",
+  boyfriendName: "Aayush",
+  musicFile: "music.mp3",
+  firstMeeting: "YOUR FIRST MEETING",
+  specialDate: "YOUR SPECIAL DATE",
+  secretMessage: "Agar main wapas jaake tumhari poori kahani shuru se dekh sakta, tab bhi main utna hi grateful hota ki hamare raste tab hi mile jab milne the.",
+  personalMessage: "Butki, tumhare saath har din ek aisa page lagta hai jise main dheere dheere padhna chahta hoon, bas taaki thoda aur der tak chale.",
+  colors: { rose: "#e8a3b8", gold: "#d9b877", lavender: "#b6a4d9" }
+};
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isTouch = window.matchMedia('(hover:none)').matches;
+
+document.getElementById('heroName').textContent = CONFIG.herName.toUpperCase();
+document.getElementById('dedicationName').textContent = CONFIG.herNickname || CONFIG.herName;
+document.getElementById('certName').textContent = CONFIG.boyfriendName;
+document.getElementById('personalMsg').textContent = CONFIG.personalMessage;
+document.getElementById('certDate').textContent = new Date().toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+
+window.scrollToId = function(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth'});
+};
+
+/* ================= LOADER ================= */
+const loaderTextEl = document.getElementById('loaderText');
+const loaderPhrases = ["Kuch kahaniyan likhi nahi jaatin…", "Woh jee jaati hain.", "HER"];
+let lp = 0;
+if(!reducedMotion){
+  const iv = setInterval(()=>{
+    lp++;
+    if(lp < loaderPhrases.length){
+      loaderTextEl.style.animation = 'none';
+      void loaderTextEl.offsetWidth;
+      loaderTextEl.textContent = loaderPhrases[lp];
+      loaderTextEl.style.animation = 'fadeText 2s ease forwards';
+    }
+  }, 650);
+  setTimeout(()=>clearInterval(iv), 2100);
+}
+setTimeout(()=>{ document.getElementById('loader').classList.add('hide'); }, reducedMotion ? 200 : 2100);
+
+/* ================= CHAPTER NAV + PROGRESS ================= */
+const chapters = [
+  {id:'hero', label:'Adhyaay 01 / 11'},
+  {id:'childhood', label:'Adhyaay 02 / 11'},
+  {id:'growing', label:'Adhyaay 03 / 11'},
+  {id:'cycle', label:'Adhyaay 04 / 11'},
+  {id:'calendarSec', label:'Adhyaay 05 / 11'},
+  {id:'moreThan', label:'Adhyaay 06 / 11'},
+  {id:'constellation', label:'Adhyaay 07 / 11'},
+  {id:'heartSection', label:'Adhyaay 08 / 11'},
+  {id:'promise', label:'Adhyaay 09 / 11'},
+  {id:'memoryWall', label:'Adhyaay 10 / 11'},
+  {id:'finale', label:'Adhyaay 11 / 11'}
+];
+const navButtons = document.querySelectorAll('#chapterNav button');
+navButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=> window.scrollToId(btn.dataset.target));
+});
+const chapterLabelEl = document.getElementById('chapterLabel');
+const progressFillEl = document.getElementById('progressFill');
+
+function updateProgress(){
+  const doc = document.documentElement;
+  const scrolled = (doc.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100;
+  progressFillEl.style.width = Math.min(100, Math.max(0, scrolled)) + '%';
+
+  let currentIdx = 0;
+  chapters.forEach((c, i)=>{
+    const el = document.getElementById(c.id);
+    if(el && el.getBoundingClientRect().top < window.innerHeight * 0.5) currentIdx = i;
+  });
+  chapterLabelEl.textContent = chapters[currentIdx].label;
+  navButtons.forEach(b=> b.classList.toggle('active', b.dataset.target === chapters[currentIdx].id));
+}
+document.addEventListener('scroll', ()=> requestAnimationFrame(updateProgress), {passive:true});
+updateProgress();
+
+/* ================= GENERIC REVEAL (IntersectionObserver) ================= */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('in'); }
+  });
+}, {threshold:0.3});
+document.querySelectorAll('.reveal, .line-reveal').forEach(el=> io.observe(el));
+
+/* wrap line-reveal text into spans (already single spans here); trigger via class 'in' already handled by CSS using .line-reveal.in span */
+
+/* ================= STARFIELD (hero) ================= */
+function setupCanvas(canvas){
+  const ctx = canvas.getContext('2d');
+  function resize(){
+    canvas.width = canvas.clientWidth * devicePixelRatio;
+    canvas.height = canvas.clientHeight * devicePixelRatio;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  return ctx;
+}
+
+function runIfVisible(canvas, drawFrame){
+  let visible = true;
+  const obs = new IntersectionObserver(es=> es.forEach(e=> visible = e.isIntersecting), {threshold:0.01});
+  obs.observe(canvas);
+  let raf;
+  function loop(t){
+    if(visible) drawFrame(t);
+    raf = requestAnimationFrame(loop);
+  }
+  raf = requestAnimationFrame(loop);
+}
+
+(function starfield(){
+  const canvas = document.getElementById('starCanvas');
+  const ctx = setupCanvas(canvas);
+  const count = isTouch ? 70 : 140;
+  const stars = Array.from({length:count}, ()=>({
+    x: Math.random(), y: Math.random(), r: Math.random()*1.6+0.3, tw: Math.random()*Math.PI*2
+  }));
+  let mx=0.5,my=0.5;
+  if(!isTouch){
+    canvas.addEventListener('mousemove', e=>{
+      mx = e.clientX/window.innerWidth; my = e.clientY/window.innerHeight;
+    });
+  }
+  runIfVisible(canvas, (t)=>{
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{
+      const parX = (mx-0.5)*14;
+      const parY = (my-0.5)*14;
+      const alpha = 0.4 + 0.5*Math.sin(t*0.001 + s.tw);
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.arc(s.x*w + parX, s.y*h + parY, s.r*devicePixelRatio, 0, Math.PI*2);
+      ctx.fill();
+    });
+  });
+})();
+
+(function nightSky(){
+  const canvas = document.getElementById('nightCanvas');
+  const ctx = setupCanvas(canvas);
+  const count = isTouch ? 40 : 80;
+  const stars = Array.from({length:count}, ()=>({ x:Math.random(), y:Math.random()*0.7, r:Math.random()*1.4+0.3, tw:Math.random()*Math.PI*2 }));
+  runIfVisible(canvas, (t)=>{
+    const w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    const grad = ctx.createRadialGradient(w*0.5,h*0.4,0,w*0.5,h*0.4,w*0.6);
+    grad.addColorStop(0,'rgba(182,164,217,0.10)');
+    grad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+    // moon
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(246,239,228,0.9)';
+    ctx.arc(w*0.78, h*0.18, 26*devicePixelRatio, 0, Math.PI*2);
+    ctx.fill();
+    stars.forEach(s=>{
+      const alpha = 0.3+0.6*Math.sin(t*0.0012+s.tw);
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.arc(s.x*w, s.y*h, s.r*devicePixelRatio, 0, Math.PI*2);
+      ctx.fill();
+    });
+  });
+})();
+
+(function finaleStars(){
+  const canvas = document.getElementById('finaleCanvas');
+  const ctx = setupCanvas(canvas);
+  const count = isTouch ? 90 : 180;
+  const stars = Array.from({length:count}, ()=>({ x:Math.random(), y:Math.random(), r:Math.random()*1.6+0.3, tw:Math.random()*Math.PI*2 }));
+  runIfVisible(canvas, (t)=>{
+    const w=canvas.width,h=canvas.height;
+    ctx.clearRect(0,0,w,h);
+    stars.forEach(s=>{
+      const alpha = 0.3+0.6*Math.sin(t*0.001+s.tw);
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+      ctx.arc(s.x*w, s.y*h, s.r*devicePixelRatio, 0, Math.PI*2);
+      ctx.fill();
+    });
+  });
+})();
+
+/* ================= BIRTH TEXT ================= */
+// line-reveal handled by IO already (adds .in class)
+
+/* ================= CHILDHOOD ORBIT ================= */
+const ageData = {
+  1: {msg:"pehli chhoti duniya", icon:"🌱"},
+  2: {msg:"chhote chhote adventures", icon:"🧸"},
+  3: {msg:"kalpana ki udaan", icon:"🎨"},
+  4: {msg:"khulkar hansi", icon:"😄"},
+  5: {msg:"badhti hui jigyasa", icon:"🔍"}
+};
+const orbitWrap = document.getElementById('orbitWrap');
+const orbitCenter = document.getElementById('orbitCenter');
+const orbitAgeNum = document.getElementById('orbitAgeNum');
+const orbitAgeMsg = document.getElementById('orbitAgeMsg');
+let currentAge = 1;
+const radius = 130;
+Object.keys(ageData).forEach((age, i)=>{
+  const angle = (i / 5) * Math.PI * 2 - Math.PI/2;
+  const btn = document.createElement('button');
+  btn.className = 'orbit-node' + (Number(age)===1 ? ' active' : '');
+  btn.textContent = age;
+  btn.style.left = `calc(50% + ${Math.cos(angle)*radius}px - 22px)`;
+  btn.style.top = `calc(50% + ${Math.sin(angle)*radius}px - 22px)`;
+  btn.dataset.age = age;
+  btn.setAttribute('aria-label', `Age ${age}`);
+  btn.addEventListener('click', ()=> selectAge(Number(age)));
+  orbitWrap.appendChild(btn);
+});
+function selectAge(age){
+  currentAge = age;
+  orbitAgeNum.textContent = age;
+  orbitAgeMsg.textContent = ageData[age].msg;
+  orbitWrap.querySelectorAll('.orbit-node').forEach(n=> n.classList.toggle('active', Number(n.dataset.age)===age));
+  orbitCenter.style.boxShadow = '0 0 60px rgba(232,163,184,.55)';
+  setTimeout(()=> orbitCenter.style.boxShadow = '0 0 40px rgba(232,163,184,.35)', 400);
+}
+document.getElementById('growBtn').addEventListener('click', ()=>{
+  orbitCenter.style.transform = 'scale(1.12)';
+  setTimeout(()=> orbitCenter.style.transform = 'scale(1)', 500);
+});
+
+/* ================= SEASON TREE ================= */
+const canopy = document.getElementById('treeCanopy');
+const seasonLabel = document.getElementById('seasonLabel');
+const seasons = [
+  {name:'SPRING', color:'#e8a3b8'},
+  {name:'SUMMER', color:'#9fd88a'},
+  {name:'AUTUMN', color:'#d99a4e'},
+  {name:'WINTER', color:'#cfd8e6'}
+];
+let seasonIdx = 0;
+const growingSection = document.getElementById('growing');
+let seasonStarted = false;
+new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !seasonStarted){
+      seasonStarted = true;
+      const iv = setInterval(()=>{
+        seasonIdx = (seasonIdx+1) % seasons.length;
+        canopy.setAttribute('fill', seasons[seasonIdx].color);
+        seasonLabel.textContent = seasons[seasonIdx].name;
+        if(seasonIdx === 3) clearInterval(iv);
+      }, reducedMotion ? 1 : 1800);
+    }
+  });
+}).observe(growingSection);
+
+/* ================= CYCLE ORBIT ================= */
+const cycleMessages = {
+  "Day 1-2": "The start often brings more tiredness — rest is productive too.",
+  "Day 3-4": "Energy can slowly start to return. Gentle movement can help.",
+  "Day 5-6": "Many feel steadier here, though this varies person to person.",
+  "Recovery": "The body settles back into its rhythm. Every body is different."
+};
+const cycleWrap = document.getElementById('cycleWrap');
+const cyclePoints = Object.keys(cycleMessages);
+const cRadius = 110;
+cyclePoints.forEach((label, i)=>{
+  const angle = (i/cyclePoints.length) * Math.PI*2 - Math.PI/2;
+  const el = document.createElement('button');
+  el.className = 'cycle-point';
+  el.textContent = i+1;
+  el.style.left = `calc(50% + ${Math.cos(angle)*cRadius}px - 15px)`;
+  el.style.top = `calc(50% + ${Math.sin(angle)*cRadius}px - 15px)`;
+  el.setAttribute('aria-label', label);
+  el.addEventListener('click', ()=>{
+    cycleWrap.querySelectorAll('.cycle-point').forEach(p=>p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('cycleInfo').textContent = cycleMessages[label];
+  });
+  cycleWrap.appendChild(el);
+});
+document.getElementById('learnBodyBtn').addEventListener('click', function(){
+  const card = document.getElementById('learnBodyCard');
+  card.style.display = card.style.display === 'none' ? 'flex' : 'none';
+});
+
+/* ================= CALENDAR ================= */
+const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const supportMsgs = [
+  "Aaj tum thodi zyada kindness ki hakdaar ho.",
+  "Dheere chalna bhi bilkul theek hai.",
+  "Tumhara comfort matter karta hai.",
+  "Tumhe theek hone ka natak karne ki zaroorat nahi.",
+  "Main sunne ke liye yahan hoon."
+];
+const calGrid = document.getElementById('calendarGrid');
+months.forEach((m, i)=>{
+  const card = document.createElement('div');
+  card.className = 'month-card';
+  card.tabIndex = 0;
+  card.innerHTML = `<span>${m}</span>`;
+  card.addEventListener('click', ()=>{
+    const wasOpen = card.classList.contains('open');
+    calGrid.querySelectorAll('.month-card').forEach(c=>{ c.classList.remove('open'); c.innerHTML = `<span>${c.dataset.m}</span>`; });
+    card.dataset.m = m;
+    if(!wasOpen){
+      card.classList.add('open');
+      const msg = supportMsgs[i % supportMsgs.length];
+      card.innerHTML = `<span class="heart-pulse">♡</span><span style="font-size:.85rem; text-align:center; padding:0 10px;">${msg}</span>`;
+    }
+  });
+  card.dataset.m = m;
+  calGrid.appendChild(card);
+});
+
+/* ================= FLOATING WORDS ================= */
+const floatWords = document.getElementById('floatWords');
+const words = ["DREAMS","LAUGHTER","KINDNESS","COURAGE","HEART"];
+const moreThanSection = document.getElementById('moreThan');
+let floatStarted = false;
+words.forEach((w,i)=>{
+  const el = document.createElement('div');
+  el.className = 'float-word';
+  el.textContent = w;
+  el.style.left = (10 + Math.random()*70) + '%';
+  el.style.top = (20 + Math.random()*55) + '%';
+  floatWords.appendChild(el);
+});
+new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !floatStarted){
+      floatStarted = true;
+      const wordEls = floatWords.querySelectorAll('.float-word');
+      wordEls.forEach((el,i)=> setTimeout(()=> el.classList.add('show'), i*350));
+      setTimeout(()=>{
+        wordEls.forEach(el=> el.classList.remove('show'));
+      }, 350*wordEls.length + 1800);
+    }
+  });
+}).observe(moreThanSection);
+
+/* ================= CARD DECK ================= */
+const noticeCards = [
+  "Jis tarah tum muskurati ho.",
+  "Jis tarah tum sabka khayal rakhti ho.",
+  "Jis tarah tum haar kar bhi chalti rehti ho.",
+  "Woh chhoti si baatein jo tumhe yaad rehti hain.",
+  "Jis tarah tum apne sapno ke baare mein baat karti ho.",
+  "Jo tum tab hoti ho, jab koi dekh nahi raha."
+];
+let deckIdx = 0;
+const deckWrap = document.getElementById('deckWrap');
+function renderDeck(){
+  deckWrap.innerHTML = '';
+  noticeCards.forEach((text,i)=>{
+    const card = document.createElement('div');
+    card.className = 'deck-card';
+    const offset = i - deckIdx;
+    card.textContent = `"${text}"`;
+    if(offset === 0){
+      card.style.transform = 'translateX(0) scale(1)';
+      card.style.opacity = '1';
+      card.style.zIndex = '10';
+      card.style.pointerEvents = 'auto';
+    } else {
+      card.style.transform = `translateX(${offset>0? 40:-40}px) scale(.9)`;
+      card.style.opacity = '0';
+      card.style.zIndex = '0';
+      card.style.pointerEvents = 'none';
+    }
+    card.addEventListener('click', ()=>{ deckIdx = (deckIdx+1) % noticeCards.length; renderDeck(); });
+    deckWrap.appendChild(card);
+  });
+}
+renderDeck();
+document.getElementById('deckPrev').addEventListener('click', ()=>{ deckIdx = (deckIdx-1+noticeCards.length)%noticeCards.length; renderDeck(); });
+document.getElementById('deckNext').addEventListener('click', ()=>{ deckIdx = (deckIdx+1)%noticeCards.length; renderDeck(); });
+
+/* ================= CONSTELLATION ================= */
+const starLabels = ["MUSKURAHAT","DAYALUTA","SAPNE","HIMMAT","DIL","HANSI","RUH"];
+const starMessages = {
+  "MUSKURAHAT": "Puri room ka mausam badal deti hai.",
+  "DAYALUTA": "Bina kisi dikhawe ke, khule dil se.",
+  "SAPNE": "Itne bade ki hum dono ke liye jagah bacha lein.",
+  "HIMMAT": "Shaant, sthir, aur bilkul sachi.",
+  "DIL": "Itna generous ki khud ko pata bhi nahi.",
+  "HANSI": "Kisi bhi kamre ki sabse achi awaaz.",
+  "RUH": "Purani aur narm, dono ek saath."
+};
+const constWrap = document.getElementById('constWrap');
+const constLines = document.getElementById('constLines');
+const constMsg = document.getElementById('constMsg');
+const constHeart = document.getElementById('constHeart');
+const starPositions = [];
+const cR = 130, cCenter = 150;
+starLabels.forEach((label,i)=>{
+  const angle = (i/starLabels.length)*Math.PI*2 - Math.PI/2;
+  const x = cCenter + Math.cos(angle)*cR;
+  const y = cCenter + Math.sin(angle)*cR;
+  starPositions.push({x,y,label});
+  const star = document.createElement('button');
+  star.className = 'star-point';
+  star.style.left = `calc(${(x/300)*100}% - 8px)`;
+  star.style.top = `calc(${(y/300)*100}% - 8px)`;
+  star.setAttribute('aria-label', label);
+  star.dataset.label = label;
+  star.addEventListener('click', ()=>{
+    star.classList.add('opened');
+    constMsg.textContent = starMessages[label];
+    checkAllOpened();
+  });
+  constWrap.appendChild(star);
+});
+function checkAllOpened(){
+  const opened = constWrap.querySelectorAll('.star-point.opened').length;
+  if(opened === starLabels.length){
+    for(let i=0;i<starPositions.length;i++){
+      for(let j=i+1;j<starPositions.length;j++){
+        const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+        line.setAttribute('x1', starPositions[i].x);
+        line.setAttribute('y1', starPositions[i].y);
+        line.setAttribute('x2', starPositions[j].x);
+        line.setAttribute('y2', starPositions[j].y);
+        line.classList.add('on');
+        constLines.appendChild(line);
+      }
+    }
+    constMsg.textContent = "Uska har chhota sa hissa milkar hi poori woh banti hai.";
+    constHeart.classList.add('show');
+  }
+}
+
+/* ================= PARTICLE HEART ================= */
+(function particleHeart(){
+  const canvas = document.getElementById('heartCanvas');
+  const ctx = setupCanvas(canvas);
+  const initialsEl = document.getElementById('initialsReveal');
+  const herInit = CONFIG.herName.charAt(0).toUpperCase();
+  const boyInit = CONFIG.boyfriendName.charAt(0).toUpperCase();
+  const N = isTouch ? 220 : 420;
+  function heartPoint(t){
+    const x = 16*Math.pow(Math.sin(t),3);
+    const y = 13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
+    return {x, y:-y};
+  }
+  const particles = [];
+  for(let i=0;i<N;i++){
+    const t = Math.random()*Math.PI*2;
+    const target = heartPoint(t);
+    particles.push({
+      x: Math.random(), y: Math.random(),
+      tx: target.x, ty: target.y,
+      vx:0, vy:0
+    });
+  }
+  let started = false, revealed = false;
+  const heartSection = document.getElementById('heartSection');
+  new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) started = true; });
+  }, {threshold:0.4}).observe(heartSection);
+
+  runIfVisible(canvas, ()=>{
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    const cx = w/2, cy = h*0.42;
+    const scale = Math.min(w,h) * 0.018;
+    ctx.fillStyle = 'rgba(232,163,184,0.85)';
+    particles.forEach(p=>{
+      let goalX, goalY;
+      if(started){
+        goalX = cx + p.tx*scale;
+        goalY = cy + p.ty*scale;
+      } else {
+        goalX = p.x*w; goalY = p.y*h;
+      }
+      p.vx += (goalX - (p.cx ?? p.x*w)) * 0.02;
+      p.vy += (goalY - (p.cy ?? p.y*h)) * 0.02;
+      p.vx *= 0.85; p.vy *= 0.85;
+      p.cx = (p.cx ?? p.x*w) + p.vx;
+      p.cy = (p.cy ?? p.y*h) + p.vy;
+      ctx.beginPath();
+      ctx.arc(p.cx, p.cy, 1.6*devicePixelRatio, 0, Math.PI*2);
+      ctx.fill();
+    });
+    if(started && !revealed){
+      revealed = true;
+      setTimeout(()=>{
+        initialsEl.textContent = `${herInit} ♥ ${boyInit}`;
+        initialsEl.classList.add('show');
+      }, 1400);
+    }
+  });
+})();
+
+/* ================= TIMELINE ================= */
+const timelineData = [
+  {title:"PEHLI MULAQAAT", text: CONFIG.firstMeeting},
+  {title:"PEHLI BAATCHEET", text:"YOUR FIRST CONVERSATION"},
+  {title:"PEHLI KHAAS YAAD", text:"YOUR MEMORY"},
+  {title:"JIS DIN SAMAJH AAYA", text:"YOUR SPECIAL DAY"},
+  {title:"AAJ", text:"Ab bhi yahan hoon, ab bhi tumhe hi chun raha hoon."}
+];
+const tlList = document.getElementById('timelineList');
+timelineData.forEach(item=>{
+  const el = document.createElement('div');
+  el.className = 'tl-item reveal';
+  el.innerHTML = `<h4>${item.title}</h4><p>${item.text}</p>`;
+  tlList.appendChild(el);
+  io.observe(el);
+});
+
+/* ================= REASONS GENERATOR ================= */
+const reasons = [
+  "Tum har kisi ki baat dhyan se sunti ho, jaise woh sabse zaroori insaan ho.",
+  "Tum apni galtiyon pe bhi hansna jaanti ho.",
+  "Tumhari hansi kisi bhi bure din ko theek kar deti hai.",
+  "Tum chhoti chhoti baaton mein bhi khushi dhoondh leti ho.",
+  "Tum jitni strong ho, utni hi soft bhi ho — aur dono ek saath.",
+  "Tum sabka khayal rakhti ho, apna bhool kar bhi.",
+  "Tumhare sapne bade hain, aur unhe poora karne ki himmat bhi.",
+  "Tum jaisi ho, waisi hi rehne se nahi darti.",
+  "Tumhare saath simple din bhi khaas lagte hain.",
+  "Tum mujhe har din behtar insaan banne ki wajah deti ho."
+];
+let lastReasonIdx = -1;
+const reasonCard = document.getElementById('reasonCard');
+document.getElementById('reasonBtn').addEventListener('click', ()=>{
+  let idx;
+  do { idx = Math.floor(Math.random()*reasons.length); } while(idx === lastReasonIdx && reasons.length > 1);
+  lastReasonIdx = idx;
+  reasonCard.style.opacity = '0';
+  reasonCard.style.transform = 'translateY(8px)';
+  setTimeout(()=>{
+    reasonCard.textContent = reasons[idx];
+    reasonCard.style.opacity = '1';
+    reasonCard.style.transform = 'none';
+  }, 220);
+});
+
+/* ================= ANNIVERSARY COUNTDOWN ================= */
+// Set CONFIG.nextSpecialDate to an ISO date string, e.g. "2027-02-14T00:00:00" to enable a real countdown.
+CONFIG.nextSpecialDate = CONFIG.nextSpecialDate || null;
+(function initCountdown(){
+  const note = document.getElementById('countdownNote');
+  if(!CONFIG.nextSpecialDate){
+    document.getElementById('cdDays').textContent = '--';
+    document.getElementById('cdHours').textContent = '--';
+    document.getElementById('cdMins').textContent = '--';
+    document.getElementById('cdSecs').textContent = '--';
+    return;
+  }
+  note.style.display = 'none';
+  const target = new Date(CONFIG.nextSpecialDate).getTime();
+  function tick(){
+    const diff = target - Date.now();
+    if(diff <= 0){
+      document.getElementById('countdownTitle').textContent = "Aaj woh khaas din hai! 🎉";
+      document.getElementById('cdDays').textContent = '0';
+      document.getElementById('cdHours').textContent = '0';
+      document.getElementById('cdMins').textContent = '0';
+      document.getElementById('cdSecs').textContent = '0';
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    document.getElementById('cdDays').textContent = d;
+    document.getElementById('cdHours').textContent = h;
+    document.getElementById('cdMins').textContent = m;
+    document.getElementById('cdSecs').textContent = s;
+    requestAnimationFrame(()=> setTimeout(tick, 1000));
+  }
+  tick();
+})();
+
+/* ================= GUESTBOOK NOTES ================= */
+const NOTES_KEY = 'herSiteNotes';
+function loadNotes(){
+  try{ return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); } catch(e){ return []; }
+}
+function saveNotes(notes){
+  try{ localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch(e){}
+}
+function renderNotes(){
+  const wrap = document.getElementById('savedNotes');
+  const notes = loadNotes();
+  wrap.innerHTML = '';
+  notes.forEach((n, i)=>{
+    const item = document.createElement('div');
+    item.className = 'note-item';
+    item.innerHTML = `<span>${n.replace(/</g,'&lt;')}</span><button class="note-del" aria-label="Delete note">✕</button>`;
+    item.querySelector('.note-del').addEventListener('click', ()=>{
+      const updated = loadNotes(); updated.splice(i,1); saveNotes(updated); renderNotes();
+    });
+    wrap.appendChild(item);
+  });
+}
+renderNotes();
+document.getElementById('saveNoteBtn').addEventListener('click', ()=>{
+  const input = document.getElementById('noteInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const notes = loadNotes();
+  notes.unshift(text);
+  saveNotes(notes);
+  input.value = '';
+  renderNotes();
+});
+
+/* ================= QUIZ ================= */
+// Edit quizData below to personalize the questions and correct answers.
+const quizData = [
+  { q: "Meri favorite cheez kaunsi hai jo tum mujhe banake khilati ho?", options: ["Maggi", "Chai", "Uska koi favorite dish", "Ice cream"], correct: 2 },
+  { q: "Hum pehli baar kahan mile the?", options: ["College mein", "Kisi function mein", "Dosto ke through", "CONFIG.firstMeeting mein likho"], correct: 3 },
+  { q: "Mujhe sabse zyada kya cheez pareshan karti hai?", options: ["Der se aana", "Bahut zyada sochna", "Cold coffee na milna", "Yeh sab thoda thoda"], correct: 1 },
+  { q: "Main tumhe sabse zyada kab miss karta hoon?", options: ["Raat ko", "Kaam ke waqt", "Har waqt, honestly", "Weekend pe"], correct: 2 }
+];
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+function renderQuiz(){
+  const item = quizData[quizIdx];
+  document.getElementById('quizProgress').textContent = `Sawaal ${quizIdx+1} / ${quizData.length}`;
+  document.getElementById('quizQuestion').textContent = item.q;
+  const optWrap = document.getElementById('quizOptions');
+  optWrap.innerHTML = '';
+  quizAnswered = false;
+  item.options.forEach((opt, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', ()=>{
+      if(quizAnswered) return;
+      quizAnswered = true;
+      if(i === item.correct){ btn.classList.add('correct'); quizScore++; }
+      else {
+        btn.classList.add('wrong');
+        optWrap.children[item.correct].classList.add('correct');
+      }
+      setTimeout(()=>{
+        quizIdx++;
+        if(quizIdx < quizData.length) renderQuiz(); else showQuizResult();
+      }, 900);
+    });
+    optWrap.appendChild(btn);
+  });
+}
+function showQuizResult(){
+  document.getElementById('quizBox').style.display = 'none';
+  const resultBox = document.getElementById('quizResult');
+  resultBox.style.display = 'block';
+  document.getElementById('quizScore').textContent = `${quizScore} / ${quizData.length}`;
+  const msgs = {
+    full: "Wow — bilkul sahi. Tum mujhe sach mein bahut acche se jaanti ho.",
+    mid: "Kaafi acha! Baaki cheezein hum saath mein aur seekhte rahenge.",
+    low: "Chalo koi baat nahi — ab tumhe thodi aur wajah mil gayi mujhe aur jaanne ki 😄"
+  };
+  document.getElementById('quizResultMsg').textContent =
+    quizScore === quizData.length ? msgs.full : quizScore >= quizData.length/2 ? msgs.mid : msgs.low;
+}
+document.getElementById('quizRestartBtn').addEventListener('click', ()=>{
+  quizIdx = 0; quizScore = 0;
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizBox').style.display = 'block';
+  renderQuiz();
+});
+renderQuiz();
+
+/* ================= MOOD CHECK-IN ================= */
+const MOOD_KEY = 'herSiteMoods';
+const moodMsgs = {
+  "🥰": "Yeh sunke mera din ban gaya. Yeh khushi aise hi bani rahe.",
+  "😊": "Achha lag raha hai sunke. Chhote achhe din bhi utne hi important hain.",
+  "😐": "Theek hai — har din perfect hone ki zaroorat nahi. Main yahan hoon.",
+  "😔": "Sunke bura laga. Yaad rakho, tum akeli nahi ho — main yahan hoon.",
+  "😴": "Thoda aaram karo. Rest karna bhi zaroori hai, kamzori nahi."
+};
+function loadMoods(){ try{ return JSON.parse(localStorage.getItem(MOOD_KEY) || '[]'); } catch(e){ return []; } }
+function saveMoods(m){ try{ localStorage.setItem(MOOD_KEY, JSON.stringify(m)); } catch(e){} }
+function renderMoodHistory(){
+  const moods = loadMoods().slice(-7);
+  document.getElementById('moodHistory').innerHTML = moods.map(m=>`<span>${m.mood}</span>`).join('');
+}
+renderMoodHistory();
+document.querySelectorAll('.mood-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.mood-btn').forEach(b=> b.classList.remove('selected'));
+    btn.classList.add('selected');
+    const mood = btn.dataset.mood;
+    document.getElementById('moodResponse').textContent = moodMsgs[mood] || '';
+    const moods = loadMoods();
+    moods.push({mood, date: new Date().toISOString().slice(0,10)});
+    saveMoods(moods);
+    renderMoodHistory();
+  });
+});
+
+/* ================= SCRATCH CARD ================= */
+(function scratchCard(){
+  const canvas = document.getElementById('scratchCanvas');
+  const wrap = document.getElementById('scratchWrap');
+  const ctx = canvas.getContext('2d');
+  function drawBase(){
+    ctx.globalCompositeOperation = 'source-over';
+    canvas.width = wrap.clientWidth * devicePixelRatio;
+    canvas.height = wrap.clientHeight * devicePixelRatio;
+    ctx.fillStyle = '#3a3040';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = 'rgba(227,189,119,.9)';
+    ctx.font = `${16*devicePixelRatio}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('✦ scratch here ✦', canvas.width/2, canvas.height/2);
+    ctx.globalCompositeOperation = 'destination-out';
+  }
+  drawBase();
+  window.addEventListener('resize', drawBase);
+  let scratching = false;
+  function scratchAt(x,y){
+    const rect = canvas.getBoundingClientRect();
+    const cx = (x-rect.left) * (canvas.width/rect.width);
+    const cy = (y-rect.top) * (canvas.height/rect.height);
+    ctx.beginPath();
+    ctx.arc(cx, cy, 26*devicePixelRatio, 0, Math.PI*2);
+    ctx.fill();
+  }
+  function start(e){ scratching = true; move(e); }
+  function end(){ scratching = false; }
+  function move(e){
+    if(!scratching) return;
+    const point = e.touches ? e.touches[0] : e;
+    scratchAt(point.clientX, point.clientY);
+  }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, {passive:true});
+  canvas.addEventListener('touchmove', move, {passive:true});
+  canvas.addEventListener('touchend', end);
+})();
+
+/* ================= DATE NIGHT IDEA GENERATOR ================= */
+const dateIdeas = [
+  "Ghar par hi ek chhota movie night rakho, uski favorite film ke saath.",
+  "Dono mil kar uska favorite khaana banao, chahe thoda gadbad ho jaye.",
+  "Bina phone ke, sirf baat karte hue ek lambi walk pe jao.",
+  "Purani photos nikaal kar saath baitho aur yaadein taaza karo.",
+  "Ek naya cafe try karo jahan tum dono pehle kabhi nahi gaye.",
+  "Ek chhota sa handwritten letter likho, bina kisi khaas mauke ke.",
+  "Sunset dekhne kahin bahar chalo, bas dus minute ke liye sahi.",
+  "Uske favorite gaane ki ek chhoti playlist banao aur saath suno."
+];
+let lastIdeaIdx = -1;
+const dateIdeaCard = document.getElementById('dateIdeaCard');
+document.getElementById('dateIdeaBtn').addEventListener('click', ()=>{
+  let idx;
+  do { idx = Math.floor(Math.random()*dateIdeas.length); } while(idx === lastIdeaIdx && dateIdeas.length > 1);
+  lastIdeaIdx = idx;
+  dateIdeaCard.style.opacity = '0';
+  dateIdeaCard.style.transform = 'translateY(8px)';
+  setTimeout(()=>{
+    dateIdeaCard.textContent = dateIdeas[idx];
+    dateIdeaCard.style.opacity = '1';
+    dateIdeaCard.style.transform = 'none';
+  }, 220);
+});
+
+/* ================= ADD TO CALENDAR ================= */
+(function addToCalendar(){
+  const btn = document.getElementById('addToCalBtn');
+  if(!CONFIG.nextSpecialDate) return;
+  btn.style.display = 'inline-block';
+  btn.addEventListener('click', ()=>{
+    const start = new Date(CONFIG.nextSpecialDate);
+    const end = new Date(start.getTime() + 60*60*1000);
+    const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
+    const ics = [
+      'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
+      `DTSTART:${fmt(start)}`, `DTEND:${fmt(end)}`,
+      `SUMMARY:Hamara Khaas Din`,
+      `DESCRIPTION:Ek yaad dilana hamare khaas din ka.`,
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+    const blob = new Blob([ics], {type:'text/calendar'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'hamara-khaas-din.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+})();
+
+/* ================= SECRET MESSAGE ================= */
+const secretLock = document.getElementById('secretLock');
+const secretText = document.getElementById('secretText');
+function unlockSecret(){
+  secretLock.textContent = '🔓';
+  secretText.textContent = CONFIG.secretMessage;
+  secretText.classList.add('show');
+}
+secretLock.addEventListener('click', unlockSecret);
+secretLock.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') unlockSecret(); });
+
+/* ================= MEMORY WALL ================= */
+const wallData = [
+  {cat:'her', file:'photo-childhood.jpg', icon:'👧', caption:'Hamari mulaqaat se pehle ki kahani.'},
+  {cat:'smile', file:'photo-smile.jpg', icon:'😊', caption:'Ek muskaan jo main kabhi nahi bhoolunga.'},
+  {cat:'childhood', file:'photo-childhood.jpg', icon:'🧸', caption:'Chhote saal, bada dil.'},
+  {cat:'favorites', file:'photo-favorite.jpg', icon:'⭐', caption:'Uski pasandida cheezon mein se ek.'},
+  {cat:'us', file:'photo-us.jpg', icon:'💞', caption:'Yeh pal aaj bhi khaas hai.'},
+  {cat:'today', file:'photo-today.jpg', icon:'🌸', caption:'Bas yahin, abhi.'}
+];
+const wallGrid = document.getElementById('wallGrid');
+let currentFilter = 'all';
+function renderWall(){
+  wallGrid.innerHTML = '';
+  wallData.filter(d=> currentFilter==='all' || d.cat===currentFilter).forEach((d,i)=>{
+    const frame = document.createElement('div');
+    frame.className = 'wall-frame';
+    frame.innerHTML = `<div class="ph">${d.icon}</div><img src="${d.file}" alt="${d.caption}" onerror="this.remove()" style="display:none;">`;
+    const img = frame.querySelector('img');
+    img.onload = ()=>{ img.style.display='block'; frame.querySelector('.ph').style.display='none'; };
+    frame.addEventListener('click', ()=> openLightbox(d));
+    wallGrid.appendChild(frame);
+  });
+}
+renderWall();
+document.getElementById('wallTabs').addEventListener('click', (e)=>{
+  if(e.target.tagName !== 'BUTTON') return;
+  document.querySelectorAll('.wall-tabs button').forEach(b=> b.classList.remove('active'));
+  e.target.classList.add('active');
+  currentFilter = e.target.dataset.cat;
+  renderWall();
+});
+
+/* ================= LIGHTBOX / STORY MODE ================= */
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbCaption = document.getElementById('lbCaption');
+let lbIndex = 0; let lbPlaying = false; let lbTimer = null;
+function openLightbox(item, autoplay){
+  lbIndex = wallData.indexOf(item);
+  showLbSlide();
+  lightbox.classList.add('show');
+  if(autoplay){ lbPlaying = true; startLbTimer(); document.getElementById('lbPause').textContent='⏸'; }
+}
+function showLbSlide(){
+  const item = wallData[lbIndex];
+  lbImg.src = item.file;
+  lbImg.alt = item.caption;
+  lbImg.onerror = ()=>{ lbImg.style.display='none'; };
+  lbImg.onload = ()=>{ lbImg.style.display='block'; };
+  lbCaption.textContent = item.caption;
+}
+function startLbTimer(){
+  clearInterval(lbTimer);
+  lbTimer = setInterval(()=>{
+    lbIndex = (lbIndex+1) % wallData.length;
+    showLbSlide();
+  }, 2600);
+}
+document.getElementById('lbPrev').addEventListener('click', ()=>{ lbIndex=(lbIndex-1+wallData.length)%wallData.length; showLbSlide(); });
+document.getElementById('lbNext').addEventListener('click', ()=>{ lbIndex=(lbIndex+1)%wallData.length; showLbSlide(); });
+document.getElementById('lbPause').addEventListener('click', function(){
+  lbPlaying = !lbPlaying;
+  this.textContent = lbPlaying ? '⏸' : '▶';
+  if(lbPlaying) startLbTimer(); else clearInterval(lbTimer);
+});
+document.getElementById('lbClose').addEventListener('click', ()=>{ lightbox.classList.remove('show'); clearInterval(lbTimer); lbPlaying=false; });
+document.getElementById('playStoryBtn').addEventListener('click', ()=> openLightbox(wallData[0], true));
+
+/* ================= CARE MODE ================= */
+const careOverlay = document.getElementById('careOverlay');
+const careMsgs = [
+  "Aaj tumhe sabke liye strong rehne ki zaroorat nahi.",
+  "Thoda aur time maangna bhi bilkul theek hai.",
+  "Aaram karne ke liye tumhe kuch prove karne ki zaroorat nahi.",
+  "Tumhe apni jagah lene aur dheere chalne ka pura haq hai."
+];
+let careIv;
+document.getElementById('careToggle').addEventListener('click', ()=>{
+  document.body.classList.add('care-mode');
+  careOverlay.classList.add('show');
+  let ci = 0;
+  document.getElementById('careMainMsg').textContent = careMsgs[0];
+  careIv = setInterval(()=>{
+    ci = (ci+1) % careMsgs.length;
+    document.getElementById('careMainMsg').textContent = careMsgs[ci];
+  }, 4200);
+});
+document.getElementById('exitCare').addEventListener('click', ()=>{
+  document.body.classList.remove('care-mode');
+  careOverlay.classList.remove('show');
+  clearInterval(careIv);
+});
+
+/* ================= ENVELOPE / LETTER ================= */
+const envelopeModal = document.getElementById('envelopeModal');
+const envelope = document.getElementById('envelope');
+const letterFull = document.getElementById('letterFull');
+document.getElementById('letterTrigger').addEventListener('click', ()=>{
+  envelopeModal.classList.add('show');
+  envelope.classList.remove('open');
+});
+envelope.addEventListener('click', ()=>{
+  envelope.classList.add('open');
+  setTimeout(()=>{
+    envelopeModal.classList.remove('show');
+    letterFull.classList.add('show');
+  }, 1600);
+});
+document.getElementById('letterClose').addEventListener('click', ()=> letterFull.classList.remove('show'));
+document.getElementById('letterReadAgain').addEventListener('click', ()=>{
+  document.getElementById('letterBody').scrollIntoView({behavior:'auto'});
+});
+
+/* hug */
+const hugMsg = document.getElementById('hugMsg');
+const hugCanvas = document.getElementById('hugCanvas');
+document.getElementById('hugBtn').addEventListener('click', ()=>{
+  hugMsg.classList.add('show');
+  playHugParticles();
+});
+function playHugParticles(){
+  hugCanvas.style.display = 'block';
+  hugCanvas.width = window.innerWidth; hugCanvas.height = window.innerHeight;
+  const ctx = hugCanvas.getContext('2d');
+  const cx = window.innerWidth/2, cy = window.innerHeight/2;
+  const N = isTouch ? 80 : 160;
+  const particles = Array.from({length:N}, ()=>({
+    x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight
+  }));
+  let frame = 0;
+  function step(){
+    frame++;
+    ctx.clearRect(0,0,hugCanvas.width, hugCanvas.height);
+    ctx.fillStyle = 'rgba(232,163,184,0.8)';
+    particles.forEach(p=>{
+      p.x += (cx - p.x) * 0.04;
+      p.y += (cy - p.y) * 0.04;
+      ctx.beginPath(); ctx.arc(p.x,p.y,2.4,0,Math.PI*2); ctx.fill();
+    });
+    if(frame < 90) requestAnimationFrame(step);
+    else { hugCanvas.style.display='none'; }
+  }
+  requestAnimationFrame(step);
+}
+
+/* ================= MUSIC PLAYER ================= */
+const audio = document.getElementById('bgAudio');
+const playBtn = document.getElementById('playBtn');
+const muteBtn = document.getElementById('muteBtn');
+const progressBar = document.getElementById('playerProgress');
+const progressFill = document.getElementById('playerProgressFill');
+let userMuted = localStorage.getItem('herSiteMuted') === 'true';
+audio.muted = userMuted;
+muteBtn.textContent = userMuted ? '🔇' : '🔊';
+
+playBtn.addEventListener('click', ()=>{
+  if(audio.paused){
+    audio.play().then(()=>{ playBtn.textContent = '⏸'; }).catch(()=>{ /* blocked; ignore */ });
+  } else {
+    audio.pause();
+    playBtn.textContent = '▶';
+  }
+});
+muteBtn.addEventListener('click', ()=>{
+  audio.muted = !audio.muted;
+  muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+  localStorage.setItem('herSiteMuted', audio.muted);
+});
+audio.addEventListener('timeupdate', ()=>{
+  if(audio.duration){
+    progressFill.style.width = (audio.currentTime/audio.duration*100) + '%';
+  }
+});
+progressBar.addEventListener('click', (e)=>{
+  const rect = progressBar.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  if(audio.duration) audio.currentTime = pct * audio.duration;
+});
+
+/* ================= SHARE ================= */
+document.getElementById('shareBtn').addEventListener('click', async ()=>{
+  const shareData = { title: 'HER — A Journey of a Woman', text: 'Yeh dekho, maine tumhare liye kuch banaya hai.', url: window.location.href };
+  const btn = document.getElementById('shareBtn');
+  try{
+    if(navigator.share){ await navigator.share(shareData); }
+    else { await navigator.clipboard.writeText(window.location.href); btn.textContent = 'Link copy ho gaya ✓'; setTimeout(()=> btn.textContent='Yeh page share karo →', 2200); }
+  } catch(e){ /* user cancelled share; ignore */ }
+});
+
+/* ================= CURSOR GLOW (desktop) ================= */
+if(!isTouch){
+  const glow = document.getElementById('cursorGlow');
+  window.addEventListener('mousemove', e=>{
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('button, a, .orbit-node, .cycle-point').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{ glow.style.width='40px'; glow.style.height='40px'; glow.style.borderColor='var(--gold)'; });
+    el.addEventListener('mouseleave', ()=>{ glow.style.width='22px'; glow.style.height='22px'; glow.style.borderColor='rgba(217,184,119,0.6)'; });
+  });
+} else {
+  document.getElementById('cursorGlow').style.display='none';
+}
+
+})();
+</script>
+</body>
+</html>
